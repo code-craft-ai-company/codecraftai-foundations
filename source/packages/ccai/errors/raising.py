@@ -16,7 +16,7 @@ import os
 
 from http.client import HTTPException
 
-from amr.errors import exceptions
+from automojo.errors import exceptions
 
 
 STATUS_TO_EXCEPTION_TABLE = {
