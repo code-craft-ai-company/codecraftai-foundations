@@ -320,7 +320,7 @@ class WaitingScope:
     
     def wait(self):
 
-        for gate in self.gates:
+        for gate in self._gates:
             gate.wait()
 
         return
