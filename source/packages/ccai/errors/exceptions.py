@@ -142,6 +142,85 @@ class UnknownParameterError(RuntimeError):
     """
 
 # ===============================================================
+#                  Commandline Errors
+# ===============================================================
+class CommandlineError(RuntimeError):
+    """
+        This is the base error for all commandline utility related errors.
+    """
+
+
+class BadOptionUsageError(CommandlineError):
+    """
+        This exception is raised when an option is improperly used.
+    """
+
+    def __init__(self, message: str, parameter_name: str, hint: str):
+        super().__init__(message)
+        self.parameter_name = parameter_name
+        self.hint = hint
+        return
+
+
+class BadParameterError(CommandlineError):
+    """
+        Raised when an option or argument are passed with a bad value.
+    """
+
+    def __init__(self, message: str, parameter_name: str, hint: str):
+        super().__init__(message)
+        self.parameter_name = parameter_name
+        self.hint = hint
+        return
+
+
+class MissingArgumentError(CommandlineError):
+    """
+        Raised when a command is missing a required argument.
+    """
+
+    def __init__(self, message: str, argument_name: str, argument_type: str, hint: str):
+        super().__init__(message)
+        self.argument_name = argument_name
+        self.argument_type = argument_type
+        self.hint = hint
+        return
+
+
+class MissingOptionError(CommandlineError):
+    """
+        Raised when a command is missing a required option.
+    """
+
+    def __init__(self, message: str, option_name: str, option_type: str, hint: str):
+        super().__init__(message)
+        self.option_name = option_name
+        self.option_type = option_type
+        self.hint = hint
+        return
+
+
+class NoSuchOptionError(CommandlineError):
+    """
+        Raised when a un-recognized flag was passed on the commandline for a given command.
+    """
+
+    def __init__(self, message: str, flag: str):
+        super().__init__(message)
+        self.flag = flag
+        return
+
+class TooManyArgumentsError(CommandlineError):
+    """
+        Raised with too many arguments were passed on the commandline for a given command.
+    """
+
+    def __init__(self, message):
+        super().__init__(message)
+        return
+
+
+# ===============================================================
 # Sorted by status code
 # ===============================================================
 
