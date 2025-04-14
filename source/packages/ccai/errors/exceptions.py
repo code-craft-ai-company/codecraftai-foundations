@@ -84,9 +84,9 @@ class MissingConfigurationError(ConfigurationError):
     """
 
 
-class NotOverloadedError(RuntimeError):
+class NotOverridenError(RuntimeError):
     """
-        This error is raised when a method that must be overloaded has not been overridden.
+        This error is raised when a method that must be overriden has not been overridden.
     """
 
 class NotSupportedError(RuntimeError):
