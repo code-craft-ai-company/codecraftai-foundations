@@ -213,6 +213,14 @@ class TooManyArgumentsError(CommandlineError):
         super().__init__(message)
         return
 
+# ===============================================================
+#                  Protocol Errors
+# ===============================================================
+class ProtocolError(RuntimeError):
+    """
+        This error is raised when a communications protocol encounters an error.
+    """
+
 
 # ===============================================================
 # Sorted by status code
