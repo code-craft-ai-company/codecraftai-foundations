@@ -221,6 +221,11 @@ class ProtocolError(RuntimeError):
         This error is raised when a communications protocol encounters an error.
     """
 
+class HTTPRequestError(HTTPException):
+    """
+        This error is raised when a HTTP request encounters an error.
+    """
+
 
 # ===============================================================
 # Sorted by status code
