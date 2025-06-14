@@ -295,18 +295,30 @@ class WaitGate:
 
     @property
     def gate(self) -> threading.Event:
+        """
+            The underlying :class:`threading.Event` object.
+        """
         return self._gate
 
     @property
     def message(self) -> str:
+        """
+            Message to include in timeout errors.
+        """
         return self._message
 
     @property
     def timeout(self) -> float:
+        """
+            The timeout in seconds used when waiting on the gate.
+        """
         return self._timeout
 
     @property
     def timeout_args(self) -> list:
+        """
+            Additional arguments for formatting timeout errors.
+        """
         return self._timeout_args
 
     def clear(self):
