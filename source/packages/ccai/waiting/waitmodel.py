@@ -66,21 +66,21 @@ class TimeoutContext:
     @property
     def end_time(self) -> datetime:
         """
-            Property to retreive the current endtime
+            Property to retrieve the current endtime
         """
         return self._end_time
 
     @property
     def delay(self) -> float:
         """
-            Property for retreiving the delay value.
+            Property for retrieving the delay value.
         """
         return self._delay
 
     @property
     def final_attempt(self) -> bool:
         """
-            Property for retreiving the final_attempt marker and for monitoring and debugging
+            Property for retrieving the ``final_attempt`` marker and for monitoring and debugging
             calls to look at the final attempt marker.
         """
         return self._final_attempt
@@ -96,7 +96,7 @@ class TimeoutContext:
     @property
     def interval(self) -> float:
         """
-            Property for retreiving the interval value.
+            Property for retrieving the interval value.
         """
         return self._interval
 
@@ -115,7 +115,7 @@ class TimeoutContext:
     @property
     def timeout(self) -> float:
         """
-            Property for retreiving the timeout value.
+            Property for retrieving the timeout value.
         """
         return self._timeout
 
@@ -129,7 +129,7 @@ class TimeoutContext:
     @property
     def what_for(self) -> str:
         """
-            Property for retreiving the what_for value.
+            Property for retrieving the ``what_for`` value.
         """
         return self._what_for
 
@@ -143,8 +143,8 @@ class TimeoutContext:
     def create_timeout(self, what_for: Optional[str]=None, detail: Optional[List[str]]=None,
                        mark_timeout: Optional[bool]=True) -> TimeoutError:
         """
-            Helper method used to create detail :class:`AKitTimeoutError` exceptions
-            that can be raised in the context of the looper method. 
+            Helper method used to create detailed :class:`TimeoutError` exceptions
+            that can be raised in the context of the looper method.
         """
         if what_for is None:
             what_for = self._what_for
@@ -259,10 +259,10 @@ class WaitCallback(Protocol):
 
     def __call__(self, wctx: TimeoutContext, *args, **kwargs) -> bool:
         """
-            This specifies a callable object that can have variable arguments but
-            that must have a final_attempt keywork arguement.  The expected behavior
-            of the callback is to return false if the expected condition has not
-            been meet.
+            This specifies a callable object that can accept variable arguments.
+            The supplied :class:`WaitContext` instance exposes a ``final_attempt``
+            attribute indicating if the invocation is the final attempt. The
+            callback should return ``True`` when the expected condition is met.
         """
 
 class WaitContext(TimeoutContext):
@@ -356,7 +356,7 @@ class WaitGate:
         if timeout is None:
             timeout = self._timeout
 
-        rtnval = self._gate.wait(timeout=self._timeout)
+        rtnval = self._gate.wait(timeout=timeout)
         if not rtnval:
             errmsg = ""
             if raise_timeout:
