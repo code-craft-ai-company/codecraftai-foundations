@@ -1,10 +1,10 @@
 """
-.. module:: itestjob
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains the `ITestJob` protocol object which is provides common patterns
-               for working for a variety of test jobs.  
+    .. module:: itestjob
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module that contains the `ITestJob` protocol object which provides common patterns
+                   for working for a variety of test jobs.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

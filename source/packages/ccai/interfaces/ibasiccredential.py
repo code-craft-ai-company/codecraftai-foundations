@@ -1,10 +1,10 @@
 """
-.. module:: ibasiccredential
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains the `IBasicCredential` protocol object which defines the properties
-               of a basic credential.
+    .. module:: ibasiccredential
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module that contains the `IBasicCredential` protocol object which defines the properties
+                   of a basic credential.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"
@@ -30,5 +30,5 @@ class IBasicCredential(Protocol):
     @property
     def password(self) -> str:
         """
-            The password assciated with the credential
+            The password associated with the credential
         """
