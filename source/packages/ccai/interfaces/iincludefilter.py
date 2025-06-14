@@ -25,6 +25,8 @@ class IIncludeFilter(Protocol):
             Determines if a device matches an include criteria internalized in the filter object.
 
             :param check_object: The object to check for a match with the exclude criteria.
+
+            :returns: ``True`` if the object should be included, otherwise ``False``.
         """
     
     def filter(self, input_list: List[Any]) -> List[Any]:
