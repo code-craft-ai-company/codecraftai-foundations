@@ -33,6 +33,15 @@ class TimeoutContext:
     """
     def __init__(self, timeout: float, interval: float=0, delay: float=0, doevery: int=-1,
                  what_for: Optional[str]=None):
+        """
+            Initializes a :class:`TimeoutContext` instance.
+
+            :param timeout: The maximum time in seconds allowed for the operation.
+            :param interval: The delay in seconds between condition rechecks.
+            :param delay: An optional starting delay before tracking begins.
+            :param doevery: Indicates at what interval loops should run.
+            :param what_for: A description of what the context is tracking.
+        """
         self._timeout = timeout
         self._interval = interval
         self._delay = delay
@@ -93,6 +102,11 @@ class TimeoutContext:
 
     @property
     def is_do_every_interval(self):
+        """
+            Indicates if the current iteration satisfies the do-every interval.
+
+            :returns: ``True`` if the loop counter is on the do-every interval.
+        """
         dei = False
         if self._doevery > -1:
             dei = self._loop_counter % self._doevery == 0
@@ -255,9 +269,20 @@ class WaitContext(TimeoutContext):
 
 
 class WaitGate:
+    """
+        Wrapper around :class:`threading.Event` that includes timeout metadata.
+    """
 
     def __init__(self, gate: threading.Event, message: Optional[str]=None, timeout: Optional[float]=None,
                  timeout_args: Optional[list]=None):
+        """
+            Constructs a :class:`WaitGate` instance.
+
+            :param gate: The underlying event object used for synchronization.
+            :param message: Optional message to include in timeout errors.
+            :param timeout: Optional timeout to use when waiting on the gate.
+            :param timeout_args: Additional arguments used when formatting timeout errors.
+        """
         self._gate = gate
         self._message = message
         self._timeout = timeout
@@ -281,45 +306,81 @@ class WaitGate:
         return self._timeout_args
 
     def clear(self):
+        """
+            Clears the underlying gate.
+        """
         self._gate.clear()
         return
 
     def is_set(self) -> bool:
+        """
+            Indicates if the underlying gate is set.
+
+            :returns: ``True`` if the gate is set.
+        """
         rtnval = self._gate.is_set()
         return rtnval
 
     def set(self):
+        """
+            Sets the underlying gate.
+        """
         self._gate.set()
         return
 
     def wait(self, timeout: Optional[float]=None, raise_timeout=False):
+        """
+            Waits for the gate to be set.
 
+            :param timeout: Optional timeout override.
+            :param raise_timeout: If ``True``, raise :class:`TimeoutError` when the gate is not set.
+
+            :returns: ``True`` if the gate was set before the timeout.
+        """
         if timeout is None:
             timeout = self._timeout
 
         rtnval = self._gate.wait(timeout=self._timeout)
         if not rtnval:
             errmsg = ""
-            raise TimeoutError(errmsg)
+            if raise_timeout:
+                raise TimeoutError(errmsg)
 
         return rtnval
 
 
 class WaitingScope:
+    """
+        Context manager that clears gates on entry and waits for them on exit.
+    """
+
     def __init__(self, gates: List[WaitGate],):
+        """
+            Initializes the waiting scope.
+
+            :param gates: The gates that will be coordinated.
+        """
         self._gates = gates
         return
 
     def __enter__(self):
+        """
+            Clears all managed gates upon entering the scope.
+        """
         for gate in self._gates:
             gate.clear()
         return
-    
-    def __exit__(self, ex_type: Type, ex_inst: BaseException, ex_tb: TracebackType):
-        return
-    
-    def wait(self):
 
+    def __exit__(self, ex_type: Type, ex_inst: BaseException, ex_tb: TracebackType):
+        """
+            Called when exiting the waiting scope.
+        """
+        return
+
+    def wait(self):
+        """
+            Waits for all managed gates to be set.
+        """
         for gate in self._gates:
             gate.wait()
 
