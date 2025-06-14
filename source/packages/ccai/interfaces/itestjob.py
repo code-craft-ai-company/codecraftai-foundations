@@ -16,7 +16,8 @@ from typing import Any, Protocol, List
 
 class ITestJob(Protocol):
     """
-        The :class:`ISystemContext` interface is used to provide a common interface for both SSH and Serial command runners.
+        The :class:`ITestJob` interface defines a common protocol for
+        implementing test jobs.
     """
 
     @property

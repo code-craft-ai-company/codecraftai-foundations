@@ -15,6 +15,11 @@ __credits__ = []
 from typing import Any, Dict, Protocol
 
 class IBasicCredential(Protocol):
+    """
+        The :class:`IBasicCredential` interface defines the
+        :pyattr:`username` and :pyattr:`password` attributes for
+        credential objects.
+    """
 
     @property
     def username(self) -> str:

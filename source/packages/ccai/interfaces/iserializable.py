@@ -15,6 +15,10 @@ __credits__ = []
 from typing import Any, Dict, Protocol
 
 class ISerializable(Protocol):
+    """
+        The :class:`ISerializable` interface defines methods for
+        serializing and deserializing objects to and from dictionaries.
+    """
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
