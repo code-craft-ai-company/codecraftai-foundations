@@ -253,6 +253,10 @@ class TimeoutContext:
 
 
 class WaitCallback(Protocol):
+    """
+        Protocol specifying the expected signature for wait callbacks.
+    """
+
     def __call__(self, wctx: TimeoutContext, *args, **kwargs) -> bool:
         """
             This specifies a callable object that can have variable arguments but

@@ -19,6 +19,10 @@ DEFAULT_WAIT_TIMEOUT = 60
 MSG_TEMPL_TIME_COMPONENTS = "    timeout={} start_time={}, end_time={} now_time={} time_diff={}"
 
 class TimeoutState:
+    """
+        Enumeration of wait states used by timeout tracking logic.
+    """
+
     TimedOut = -1
     NotStarted = 0
     Tracking = 1
