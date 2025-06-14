@@ -199,8 +199,13 @@ class EnhancedErrorMixIn:
 
     def add_context(self, content: str, label: str = "CONTEXT") -> None:
         """
-            Adds context to an exception and associates it with the function context
-            on the stack.
+            Adds context to an exception and associates it with the function
+            context on the stack.
+
+            :param content: The context content to attach to the exception.
+            :param label: The label to prefix the context with.
+
+            :returns: ``None``
         """
         caller_stack = inspect.stack()[2]
         caller_func_name = caller_stack.frame.f_code.co_name
@@ -379,6 +384,13 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
 def enhance_exception(xcpt: BaseException, content, label="CONTEXT") -> None:
     """
         Allows for the enhancing of exceptions.
+
+        :param xcpt: The exception instance to augment.
+        :param content: Additional context information to associate with the
+            exception.
+        :param label: A label describing the context data.
+
+        :returns: ``None``
     """
 
     # EnhancedErrorMixIn just uses Duck typing so it should be safe to dynamically
