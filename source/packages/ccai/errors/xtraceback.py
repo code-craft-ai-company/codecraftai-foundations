@@ -176,11 +176,25 @@ def split_and_indent_lines(msg: str, level: int, indent: int=4, pre_strip_leadin
 
 class EnhancedErrorMixIn:
     def __init__(self, *args, **kwargs):
+        """
+            Initializes the mixin and prepares the context store.
+
+            :param args: Positional arguments passed to the constructor.
+            :param kwargs: Keyword arguments passed to the constructor.
+
+            :returns: ``None``
+        """
         self._contexts: Dict[str, Dict[str, str]] = {}
         return
 
     @property
     def contexts(self) -> Dict[str, Dict[str, str]]:
+        """
+            Provides access to the context dictionary added via
+            :meth:`add_context`.
+
+            :returns: Mapping of function names to context information.
+        """
         return self._contexts
 
     def add_context(self, content: str, label: str = "CONTEXT") -> None:
@@ -200,6 +214,14 @@ class EnhancedErrorMixIn:
 
 
 def collect_stack_frames(calling_frame, ex_inst) -> List[FrameDetail]:
+    """
+        Collects the stack frames for the context around ``ex_inst``.
+
+        :param calling_frame: The frame where collection should begin.
+        :param ex_inst: The exception instance being processed.
+
+        :returns: A list of :class:`FrameDetail` objects representing the stack.
+    """
 
     tb_code = None
     tb_lineno = None
@@ -272,6 +294,13 @@ def collect_stack_frames(calling_frame, ex_inst) -> List[FrameDetail]:
 
 
 def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
+    """
+        Builds a :class:`TracebackDetail` from an exception instance.
+
+        :param ex_inst: The exception instance to analyze.
+
+        :returns: A populated :class:`TracebackDetail` object.
+    """
 
     max_full_display = TRACEBACK_CONFIG.TRACEBACK_MAX_FULL_DISPLAY
     expand_first_n = TRACEBACK_CONFIG.TRACEBACK_EXPAND_FIRST_N
@@ -379,6 +408,13 @@ def format_exc_lines():
 
 
 def format_exception(ex_inst: BaseException):
+    """
+        Formats an exception into a list of traceback lines.
+
+        :param ex_inst: The exception instance to format.
+
+        :returns: A list of strings containing the formatted traceback.
+    """
 
     tbdetail = create_traceback_detail(ex_inst)
 
@@ -388,7 +424,14 @@ def format_exception(ex_inst: BaseException):
 
 
 def format_traceback_detail(tbdetail: TracebackDetail) -> List[str]:
-    
+    """
+        Creates a human readable list of lines from a traceback detail object.
+
+        :param tbdetail: The :class:`TracebackDetail` to format.
+
+        :returns: A list of formatted traceback lines.
+    """
+
     detail_lines = [
         f"{tbdetail.extype}: {','.join(tbdetail.exargs)}",
         "Traceback (most recent call first):"

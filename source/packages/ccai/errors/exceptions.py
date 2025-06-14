@@ -31,6 +31,16 @@ class CommandError(RuntimeError):
         This error is the base error for command results errors.
     """
     def __init__(self, message, status, stdout, stderr, *args, **kwargs):
+        """
+            Initializes the :class:`CommandError` instance.
+
+            :param message: The message describing the command failure.
+            :param status: The exit status code returned by the command.
+            :param stdout: The standard output captured from the command.
+            :param stderr: The standard error captured from the command.
+
+            :returns: ``None``
+        """
         super().__init__(message, *args, **kwargs)
         self.status = status
         self.stdout = stdout
@@ -150,6 +160,15 @@ class BadOptionUsageError(CommandlineError):
     """
 
     def __init__(self, message: str, parameter_name: str, hint: str):
+        """
+            Initializes a :class:`BadOptionUsageError` instance.
+
+            :param message: The reason the option usage was invalid.
+            :param parameter_name: The name of the affected option.
+            :param hint: A string containing usage guidance.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         self.parameter_name = parameter_name
         self.hint = hint
@@ -162,6 +181,15 @@ class BadParameterError(CommandlineError):
     """
 
     def __init__(self, message: str, parameter_name: str, hint: str):
+        """
+            Initializes a :class:`BadParameterError` instance.
+
+            :param message: The error text describing the invalid value.
+            :param parameter_name: The name of the parameter that was invalid.
+            :param hint: A string containing usage guidance.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         self.parameter_name = parameter_name
         self.hint = hint
@@ -174,6 +202,16 @@ class MissingArgumentError(CommandlineError):
     """
 
     def __init__(self, message: str, argument_name: str, argument_type: str, hint: str):
+        """
+            Initializes a :class:`MissingArgumentError` instance.
+
+            :param message: The reason the argument is required.
+            :param argument_name: The name of the missing argument.
+            :param argument_type: The expected type for the argument.
+            :param hint: Guidance for supplying the argument.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         self.argument_name = argument_name
         self.argument_type = argument_type
@@ -187,6 +225,16 @@ class MissingOptionError(CommandlineError):
     """
 
     def __init__(self, message: str, option_name: str, option_type: str, hint: str):
+        """
+            Initializes a :class:`MissingOptionError` instance.
+
+            :param message: The message describing the missing option.
+            :param option_name: The name of the required option.
+            :param option_type: The expected type for the option value.
+            :param hint: Guidance for supplying the option.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         self.option_name = option_name
         self.option_type = option_type
@@ -200,6 +248,14 @@ class NoSuchOptionError(CommandlineError):
     """
 
     def __init__(self, message: str, flag: str):
+        """
+            Initializes a :class:`NoSuchOptionError` instance.
+
+            :param message: Explanation for the unknown option.
+            :param flag: The flag value that was not recognized.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         self.flag = flag
         return
@@ -210,6 +266,13 @@ class TooManyArgumentsError(CommandlineError):
     """
 
     def __init__(self, message):
+        """
+            Initializes a :class:`TooManyArgumentsError` instance.
+
+            :param message: The message describing the extraneous arguments.
+
+            :returns: ``None``
+        """
         super().__init__(message)
         return
 

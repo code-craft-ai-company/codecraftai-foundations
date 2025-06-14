@@ -73,7 +73,17 @@ STATUS_TO_EXCEPTION_TABLE = {
 
 
 def format_http_error_message(resp_code: int, resp_msg: str, url: Optional[str] = None, context: Optional[str] = None) -> str:
-    
+    """
+        Builds a formatted HTTP error message from the response data.
+
+        :param resp_code: The HTTP status code returned by a request.
+        :param resp_msg: The text message that accompanied the status code.
+        :param url: The URL the request was sent to, if available.
+        :param context: Additional context about the request.
+
+        :returns: The assembled error message string.
+    """
+
     err_msg_lines = [
         f"HTTP Error: code={resp_code} message={resp_msg}."
     ]
@@ -83,13 +93,22 @@ def format_http_error_message(resp_code: int, resp_msg: str, url: Optional[str] 
 
     if context is not None:
         err_msg_lines.append(f"CONTEXT: {context}")
-    
+
     err_msg = os.linesep.join(err_msg_lines)
-    
+
     return err_msg
 
 
 def raise_for_http_status(resp_code: int, resp_msg: str, context: Optional[str] = None) -> None:
+    """
+        Raises an HTTP related exception if ``resp_code`` indicates an error.
+
+        :param resp_code: The numeric status code returned by the server.
+        :param resp_msg: The accompanying message for the status code.
+        :param context: Additional context for the request being checked.
+
+        :returns: ``None``
+    """
 
     if resp_code >= 300:
         if resp_code in STATUS_TO_EXCEPTION_TABLE:
