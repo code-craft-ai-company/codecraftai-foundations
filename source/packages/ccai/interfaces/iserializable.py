@@ -18,7 +18,19 @@ class ISerializable(Protocol):
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
+        """
+            Creates an instance of the class from a dictionary representation.
+
+            :param data: The dictionary containing the data for the object.
+
+            :returns: A new instance of the class.
+        """
         ...
 
     def as_dict(self) -> Dict[str, Any]:
+        """
+            Returns a dictionary representation of the object.
+
+            :returns: The object serialized to a dictionary.
+        """
         ...

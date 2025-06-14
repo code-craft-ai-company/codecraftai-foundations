@@ -9,7 +9,7 @@ class IHint(Protocol):
 
     def get_hint(self) -> str:
         """
-            :returns: The hint string that can be used to identify the object."
+            :returns: The hint string that can be used to identify the object.
         """
 
     def matches(self, obj: Any) -> bool:
