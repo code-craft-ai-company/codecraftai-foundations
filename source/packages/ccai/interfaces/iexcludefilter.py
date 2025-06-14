@@ -1,10 +1,10 @@
 """
-.. module:: iexcludefilter
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains a protocol for determining if an item should be excluded in
-               a list.
+    .. module:: iexcludefilter
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module that contains a protocol for determining if an item should be excluded in
+                   a list.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

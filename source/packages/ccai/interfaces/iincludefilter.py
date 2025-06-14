@@ -1,10 +1,10 @@
 """
-.. module:: iincludefilter
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains a protocol for determining if an item should be included in
-               a list.
+    .. module:: iincludefilter
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module that contains a protocol for determining if an item should be included in
+                   a list.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"
@@ -24,7 +24,7 @@ class IIncludeFilter(Protocol):
         """
             Determines if a device matches an include criteria internalized in the filter object.
 
-            :param check_object: The object to check for a match with the exclude criteria.
+            :param check_object: The object to check for a match with the include criteria.
 
             :returns: ``True`` if the object should be included, otherwise ``False``.
         """
