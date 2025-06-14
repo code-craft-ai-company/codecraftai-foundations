@@ -1,9 +1,9 @@
 """
-.. module:: raising
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module with functions for formatting and raising exceptions.
+    .. module:: raising
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module with functions for formatting and raising exceptions.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

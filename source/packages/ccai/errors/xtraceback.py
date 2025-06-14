@@ -1,10 +1,10 @@
 """
-.. module:: xtraceback
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module which contains functions for enhancing and formatting exceptions and
-               common exception types not provided by python.
+    .. module:: xtraceback
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module which contains functions for enhancing and formatting exceptions and
+                   common exception types not provided by python.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

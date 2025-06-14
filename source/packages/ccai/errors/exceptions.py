@@ -1,9 +1,9 @@
 """
-.. module:: exceptions
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module which contains exceptions not provided by the standard python libraries.
+    .. module:: exceptions
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Module which contains exceptions not provided by the standard python libraries.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"
