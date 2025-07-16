@@ -146,6 +146,28 @@ class UnknownParameterError(RuntimeError):
     """
 
 # ===============================================================
+#                  Timeout Errors
+# ===============================================================
+
+class CompletionTimeout(TimeoutError):
+    """
+        The exception that is raised when something has not completed within
+        a constrained amount of time.
+    """
+
+class ConnectionTimeout(TimeoutError):
+    """
+        The exception that is raised when something has not been able to make a
+        connection within a constrained amount of time.
+    """
+
+class InActivityTimeout(TimeoutError):
+    """
+        The exception that is raised when there has been no activity for a task
+        or connection within a constrained amount of time.
+    """
+
+# ===============================================================
 #                  Commandline Errors
 # ===============================================================
 class CommandlineError(RuntimeError):
