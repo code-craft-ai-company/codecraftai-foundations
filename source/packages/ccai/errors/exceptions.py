@@ -306,6 +306,11 @@ class ProtocolError(RuntimeError):
         This error is raised when a communications protocol encounters an error.
     """
 
+class UnExpectedSessionClosureError(RuntimeError):
+    """
+        This error is raised when a protocol session is unexpectedly closed.
+    """
+
 class HTTPRequestError(HTTPException):
     """
         This error is raised when a HTTP request encounters an error.
