@@ -99,12 +99,13 @@ def format_http_error_message(resp_code: int, resp_msg: str, url: Optional[str] 
     return err_msg
 
 
-def raise_for_http_status(resp_code: int, resp_msg: str, context: Optional[str] = None) -> None:
+def raise_for_http_status(resp_code: int, resp_msg: str, call_url: str, context: Optional[str] = None) -> None:
     """
         Raises an HTTP related exception if ``resp_code`` indicates an error.
 
         :param resp_code: The numeric status code returned by the server.
         :param resp_msg: The accompanying message for the status code.
+        :param call_url: The url associated with the call.
         :param context: Additional context for the request being checked.
 
         :returns: ``None``
@@ -122,7 +123,7 @@ def raise_for_http_status(resp_code: int, resp_msg: str, context: Optional[str] 
         else:
             error_type = HTTPException
 
-        msg = format_http_error_message(resp_code, resp_msg, context)
+        msg = format_http_error_message(resp_code, resp_msg, call_url, context)
 
         raise error_type(msg)
 
