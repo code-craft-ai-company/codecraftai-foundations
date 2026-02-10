@@ -145,6 +145,13 @@ class UnknownParameterError(RuntimeError):
         reference to a well-known parameter that cannot be resolved.
     """
 
+class UnSupportedPlatformError(RuntimeError):
+    """
+        This error is raised when the test framework encounters code that is
+         not supported for the current platform environment
+    """
+
+
 # ===============================================================
 #                  Timeout Errors
 # ===============================================================
