@@ -403,8 +403,13 @@ def enhance_exception(xcpt: BaseException, content, label="CONTEXT") -> None:
 
     enh_xcpt: EnhancedErrorMixIn = xcpt
 
-    if not hasattr(xcpt, "_context"):
-        setattr(enh_xcpt, "_context", {})
+    # When EnhancedErrorMixIn is appended dynamically (rather than being a
+    # static base in the exception's MRO), the mixin's ``__init__`` was
+    # never run on this instance — so the canonical ``_contexts`` dict the
+    # mixin reads from in :meth:`add_context` will be missing.  Pre-seed it
+    # here using the same attribute name the mixin uses (plural).
+    if not hasattr(xcpt, "_contexts"):
+        setattr(enh_xcpt, "_contexts", {})
 
     enh_xcpt.add_context(content, label=label)
 

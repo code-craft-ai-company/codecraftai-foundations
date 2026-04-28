@@ -634,11 +634,11 @@ class TestEnhanceException(unittest.TestCase):
         context.
 
         :class:`EnhancedErrorMixIn` is mixed in dynamically by
-        :func:`enhance_exception`. The function does not run the mixin's
-        ``__init__`` so the ``_contexts`` storage must be present on the
-        instance before :meth:`EnhancedErrorMixIn.add_context` is reachable.
-        These tests pre-seed ``_contexts`` on the instance and validate the
-        observable post-conditions (mixin presence, recorded payload).
+        :func:`enhance_exception`. The function does not invoke the mixin's
+        ``__init__`` on the existing exception instance — instead it
+        pre-seeds the ``_contexts`` dict directly when missing — so callers
+        can attach context to any pre-existing exception without the mixin
+        having been part of the static MRO.
     """
 
     def test_enhance_attaches_context(self) -> None:
@@ -659,8 +659,6 @@ class TestEnhanceException(unittest.TestCase):
             return
 
         ex = MyOpError("oops")
-        # Pre-initialize the contexts store that the mixin requires.
-        ex._contexts = {}
         helper(xcpt=ex)
 
         is_mixin = xtraceback.EnhancedErrorMixIn in type(ex).__bases__
@@ -690,7 +688,6 @@ class TestEnhanceException(unittest.TestCase):
             return
 
         ex = AnotherOpError("oops")
-        ex._contexts = {}
         helper(xcpt=ex)
 
         contexts = ex.contexts  # type: ignore[attr-defined]
@@ -711,11 +708,42 @@ class TestEnhanceException(unittest.TestCase):
             pass
 
         ex = YetAnotherError("oops")
-        ex._contexts = {}
         xtraceback.enhance_exception(xcpt=ex, content="data", label="X")
 
         is_mixin = xtraceback.EnhancedErrorMixIn in type(ex).__bases__
         self.assertTrue(is_mixin)
+        return
+
+    def test_enhance_seeds_contexts_when_missing(self) -> None:
+        """
+            Verifies that :func:`enhance_exception` seeds the ``_contexts``
+            dict on a freshly-constructed exception that has never had the
+            mixin's ``__init__`` run.  This is the regression that motivated
+            the singular -> plural rename in the source.
+
+            :returns: ``None``
+        """
+        class FreshError(RuntimeError):
+            pass
+
+        ex = FreshError("oops")
+        # Confirm the precondition: no _contexts attribute on a vanilla
+        # RuntimeError subclass.
+        is_unset = not hasattr(ex, "_contexts")
+        self.assertTrue(is_unset)
+
+        xtraceback.enhance_exception(xcpt=ex, content="seeded", label="REGRESSION")
+
+        # After the call, the mixin must have been wired in AND the context
+        # must be observable through the canonical ``contexts`` property.
+        is_seeded = hasattr(ex, "_contexts")
+        self.assertTrue(is_seeded)
+        contexts = ex.contexts  # type: ignore[attr-defined]
+        is_dict = isinstance(contexts, dict)
+        self.assertTrue(is_dict)
+        # The recording function name will be this test's name.
+        is_present = "test_enhance_seeds_contexts_when_missing" in contexts
+        self.assertTrue(is_present)
         return
 
 
