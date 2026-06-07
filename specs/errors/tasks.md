@@ -16,8 +16,8 @@
 4. Add package-level docstring with usage examples
 
 **Acceptance Criteria**:
-- Users can import exceptions directly: `from automojo.errors import ConfigurationError`
-- Public functions are accessible: `from automojo.errors import enhance_exception`
+- Users can import exceptions directly: `from ccai.errors import ConfigurationError`
+- Public functions are accessible: `from ccai.errors import enhance_exception`
 - Package docstring provides clear usage guidance
 
 ### TASK-PKG-002: Add Module-Level Documentation

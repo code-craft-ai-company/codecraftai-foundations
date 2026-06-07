@@ -2,16 +2,16 @@
     .. module:: test_exceptions
         :platform: Darwin, Linux, Unix, Windows
         :synopsis: Unit tests covering the exception classes defined in
-                   :mod:`automojo.errors.exceptions`.
+                   :mod:`ccai.errors.exceptions`.
 
-    .. moduleauthor:: Automation Mojo
+    .. moduleauthor:: Code Craft AI
 """
 
 import unittest
 
 from http.client import HTTPException
 
-from automojo.errors import exceptions
+from ccai.errors import exceptions
 
 
 class TestSimpleRuntimeErrors(unittest.TestCase):

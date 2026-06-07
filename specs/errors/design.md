@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `automojo.errors` package is a centralized error handling library designed to provide standardized exception types and error management utilities for automation testing frameworks. This package serves as a foundational component that ensures consistent error handling across multiple automation packages by providing:
+The `ccai.errors` package is a centralized error handling library designed to provide standardized exception types and error management utilities for automation testing frameworks. This package serves as a foundational component that ensures consistent error handling across multiple automation packages by providing:
 
 1. **Standardized Exception Types** - A comprehensive collection of domain-specific exceptions
 2. **Error Enhancement Utilities** - Tools for adding context and improving error diagnostics  
@@ -14,7 +14,7 @@ The `automojo.errors` package is a centralized error handling library designed t
 The package is organized into four main modules:
 
 ```
-automojo/errors/
+ccai/errors/
 ├── __init__.py          # Package initialization
 ├── exceptions.py        # Exception type definitions
 ├── raising.py          # HTTP error raising utilities
@@ -125,19 +125,19 @@ Following the project's principle of prioritizing debuggability over performance
 
 ### Exception Raising
 ```python
-from automojo.errors.exceptions import ConfigurationError
+from ccai.errors.exceptions import ConfigurationError
 raise ConfigurationError("Invalid configuration parameter")
 ```
 
 ### HTTP Error Handling
 ```python
-from automojo.errors.raising import raise_for_http_status
+from ccai.errors.raising import raise_for_http_status
 raise_for_http_status(404, "Not Found", context="API endpoint lookup")
 ```
 
 ### Exception Enhancement
 ```python
-from automojo.errors.xtraceback import enhance_exception
+from ccai.errors.xtraceback import enhance_exception
 try:
     risky_operation()
 except Exception as ex:
@@ -147,7 +147,7 @@ except Exception as ex:
 
 ### Enhanced Traceback
 ```python
-from automojo.errors.xtraceback import format_exception
+from ccai.errors.xtraceback import format_exception
 try:
     failing_operation()
 except Exception as ex:

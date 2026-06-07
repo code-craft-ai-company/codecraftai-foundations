@@ -3,7 +3,7 @@
 ## 1. Purpose and Scope
 
 ### 1.1 Purpose
-The `automojo.errors` package shall provide a centralized error handling library for automation testing frameworks, ensuring consistent exception types and enhanced error diagnostics across all dependent packages.
+The `ccai.errors` package shall provide a centralized error handling library for automation testing frameworks, ensuring consistent exception types and enhanced error diagnostics across all dependent packages.
 
 ### 1.2 Scope
 This package serves as a foundational component that standardizes error handling for the automation testing ecosystem, providing exception definitions, HTTP error utilities, and enhanced traceback capabilities.
