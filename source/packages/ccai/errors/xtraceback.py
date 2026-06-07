@@ -275,6 +275,7 @@ def collect_stack_frames(calling_frame, ex_inst) -> List[FrameDetail]:
         code_startline = None
         code_lastline = None
         trace_line = "<obfuscated>"
+        fmt_code_lines = []
 
         if co_name != "<module>" and os.path.exists(co_filename) and co_filename.endswith(".py"):
             code_lines, code_startline = inspect.getsourcelines(tb_code)
