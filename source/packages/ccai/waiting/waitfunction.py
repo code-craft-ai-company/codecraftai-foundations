@@ -60,7 +60,7 @@ def wait_for_it(looper: WaitCallback, *largs, what_for: Optional[str]=None, dela
         wctx = WaitContext(timeout, interval=interval, delay=delay, what_for=what_for)
 
     if wctx.delay > 0:
-        time.sleep(DEFAULT_WAIT_DELAY)
+        time.sleep(wctx.delay)
 
     wctx.mark_begin()
 
