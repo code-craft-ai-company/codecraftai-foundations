@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `automojo-waiting` package provides a robust, flexible waiting and timeout management system for Python applications. It is designed primarily for testing frameworks and automation tools where reliable condition polling and timeout handling are critical.
+The `codecraftai-waiting` package provides a robust, flexible waiting and timeout management system for Python applications. It is designed primarily for testing frameworks and automation tools where reliable condition polling and timeout handling are critical.
 
 ## Architecture
 

@@ -9,10 +9,10 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
-from automojo.waiting.constants import (
+from ccai.waiting.constants import (
     TimeoutState,
     DEFAULT_WAIT_DELAY,
     DEFAULT_WAIT_INTERVAL,
@@ -20,9 +20,9 @@ from automojo.waiting.constants import (
     MSG_TEMPL_TIME_COMPONENTS
 )
 
-from automojo.waiting.waitfunction import wait_for_it
+from ccai.waiting.waitfunction import wait_for_it
 
-from automojo.waiting.waitmodel import (
+from ccai.waiting.waitmodel import (
     TimeoutContext,
     WaitContext,
     WaitGate,
