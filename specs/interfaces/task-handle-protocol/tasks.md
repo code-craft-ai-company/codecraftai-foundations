@@ -2,7 +2,7 @@
 
 ## Module and Models
 
-- [x] 1. Create `automojo-interfaces/source/packages/automojo/interfaces/itaskhandle.py`.
+- [x] 1. Create `codecraftai-interfaces/source/packages/ccai/interfaces/itaskhandle.py`.
 - [x] 2. Define `TaskState(IntEnum)` with `PENDING=1`, `RUNNING=2`,
   `SUCCEEDED=3`, `FAILED=4`, `CANCELLED=5`.
 - [x] 3. Define `TaskResult` dataclass with fields listed in the design.

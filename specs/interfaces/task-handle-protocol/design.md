@@ -11,12 +11,12 @@ poll loop synchronously via Aspects.
 
 The protocol is intentionally narrow: four methods and one typed
 result. The concrete reusable implementation
-(`TaskHandle` on `automojo-restclient-base`) covers the REST-polling
+(`TaskHandle` on `codecraftai-restclient-base`) covers the REST-polling
 case used by vSphere, Proxmox, Nutanix, and others. Vendor packages
 that already model their own task object (libvirt, hypervisor native
 bindings) implement `ITaskHandle` directly.
 
-**See Also:** [task-handle-base](../../../automojo-restclient-base/specs/task-handle-base/design.md),
+**See Also:** [task-handle-base](../../../codecraftai-restclient-base/specs/task-handle-base/design.md),
 [vpn-control-plane-protocol](../vpn-control-plane-protocol/design.md).
 
 ---
@@ -51,7 +51,7 @@ from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Optional, Protocol
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 class TaskState(IntEnum):
@@ -106,7 +106,7 @@ class ITaskHandle(Protocol):
 ## Module Layout
 
 ```
-automojo-interfaces/source/packages/automojo/interfaces/
+codecraftai-interfaces/source/packages/ccai/interfaces/
   itaskhandle.py    <-- ITaskHandle, TaskResult, TaskState
 ```
 
@@ -132,7 +132,7 @@ called out in the project standards' exception-handling rules.
 
 ## See Also
 
-- [task-handle-base](../../../automojo-restclient-base/specs/task-handle-base/design.md)
+- [task-handle-base](../../../codecraftai-restclient-base/specs/task-handle-base/design.md)
   — the reusable REST-poll implementation of this protocol.
 - [vpn-control-plane-protocol](../vpn-control-plane-protocol/design.md)
   — provider implementations may surface `mint_authkey` /

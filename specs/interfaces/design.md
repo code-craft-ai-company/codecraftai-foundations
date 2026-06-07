@@ -7,7 +7,7 @@ The AutoMojo Interfaces package is a foundational Python library that provides a
 ## Package Structure
 
 ```
-source/packages/automojo/
+source/packages/ccai/
 └── interfaces/
     ├── __init__.py
     ├── ibasiccredential.py

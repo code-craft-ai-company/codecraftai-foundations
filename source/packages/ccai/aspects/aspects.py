@@ -2,7 +2,7 @@
     .. module:: aspects
         :platform: Darwin, Linux, Unix, Windows
         :synopsis: Module that contains the :class:`Aspects` placeholder used by
-                   contract-layer protocols across the ``automojo-*`` suite.
+                   contract-layer protocols across the ``codecraftai-*`` suite.
 
     The Aspects pattern packages behaviour-modifying parameters (retry counts,
     completion intervals, completion timeouts, logging hooks) into a single
@@ -18,7 +18,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 

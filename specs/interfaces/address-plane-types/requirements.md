@@ -3,7 +3,7 @@
 ## Introduction
 
 The `address-plane-types` feature introduces the `AddressPlane` enum and
-the `IDeviceAddressSet` protocol into `automojo-interfaces`. These types
+the `IDeviceAddressSet` protocol into `codecraftai-interfaces`. These types
 formalise the §1 observation that a device in a mesh-VPN landscape is
 reachable via *multiple* addresses on distinct planes — public, private,
 and overlay — and replace the single `_host` string the framework
@@ -15,15 +15,15 @@ every API that accepts a host MUST eventually accept an
 address" is `addressset.address_for(plane)`.
 
 This spec defines the *types only*. `DeviceAddressSet` (the concrete
-class) lives in `automojo-landscaping`; `resolve_in_plane` (the helper
-that consumes them) lives in `automojo-networking/address-plane-resolution`.
+class) lives in `codecraftai-landscaping`; `resolve_in_plane` (the helper
+that consumes them) lives in `codecraftai-networking/address-plane-resolution`.
 
 **Property tests are required (⊙)** because `address_for(plane)`'s
 totality, fall-through ordering, and idempotence under repeated lookup
 are computational invariants downstream code relies on.
 
 **See Also:** [vpn-client-protocol](../vpn-client-protocol/design.md),
-[address-plane-resolution](../../../automojo-networking/specs/address-plane-resolution/design.md).
+[address-plane-resolution](../../../codecraftai-networking/specs/address-plane-resolution/design.md).
 
 ---
 
@@ -82,7 +82,7 @@ import a landscape class just to build a fixture.
 2. THE SYSTEM SHALL document `DeviceAddressSetSnapshot` as suitable for
    tests and for callers that already have all three addresses in hand;
    landscape coordinators should use the richer `DeviceAddressSet` in
-   `automojo-landscaping`.
+   `codecraftai-landscaping`.
 
 ---
 

@@ -3,19 +3,19 @@
 ## Introduction
 
 The `task-handle-protocol` feature introduces `ITaskHandle` into
-`automojo-interfaces`. The protocol captures the §6.6 decision in
+`codecraftai-interfaces`. The protocol captures the §6.6 decision in
 PLAN-VPN-AND-CLOUD-PROVISIONING.md: vSphere (and other venues with
 async APIs) must surface long-running operations as a *synchronous*
 `TaskHandle` polled under Aspects control — not as `asyncio` tasks.
 That decision keeps the mental model consistent with every other
-automojo client.
+ccai client.
 
 This spec defines the *protocol only*. The reusable concrete
-implementation lives in `automojo-restclient-base/task-handle-base`;
-vendor-specific implementations live in `automojo-interop-vsphere`
+implementation lives in `codecraftai-restclient-base/task-handle-base`;
+vendor-specific implementations live in `codecraftai-interop-vsphere`
 and any other venue interop package that surfaces async APIs.
 
-**See Also:** [task-handle-base](../../../automojo-restclient-base/specs/task-handle-base/design.md).
+**See Also:** [task-handle-base](../../../codecraftai-restclient-base/specs/task-handle-base/design.md).
 
 ---
 
@@ -103,4 +103,4 @@ module to remain dependency-free.
 #### Acceptance Criteria
 
 1. THE SYSTEM SHALL import only `typing`, `dataclasses`, `enum`,
-   and `automojo.aspects.aspects` in `itaskhandle.py`.
+   and `ccai.aspects.aspects` in `itaskhandle.py`.

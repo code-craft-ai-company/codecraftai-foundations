@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.itaskhandle` module.
+    Unit tests for the :mod:`ccai.interfaces.itaskhandle` module.
 """
 
 import dataclasses
@@ -8,8 +8,8 @@ import typing
 import unittest
 from typing import List, Optional
 
-from automojo.aspects.aspects import Aspects
-from automojo.interfaces.itaskhandle import ITaskHandle, TaskResult, TaskState
+from ccai.aspects.aspects import Aspects
+from ccai.interfaces.itaskhandle import ITaskHandle, TaskResult, TaskState
 
 
 class MockTaskHandle:

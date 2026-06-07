@@ -2,7 +2,7 @@
 
 ## Module and Models
 
-- [x] 1. Create `automojo-interfaces/source/packages/automojo/interfaces/ivpnclient.py`.
+- [x] 1. Create `codecraftai-interfaces/source/packages/ccai/interfaces/ivpnclient.py`.
 - [x] 2. Define `VPNStatus` dataclass with the fields listed in the design
   (`connected`, `backend_state`, `self_address`, `hostname`, `tags`, `provider`).
 - [x] 3. Define `IVPNClient(Protocol)` with the five methods listed in the
@@ -17,7 +17,7 @@
 - [x] 6. Confirm `bring_up`, `bring_down`, and `status` declare
   `aspects: Aspects` and that `self_address` / `peer_addresses` do not.
 - [x] 7. Confirm no third-party imports — only `typing`, `dataclasses`, and
-  `automojo.aspects.aspects`.
+  `ccai.aspects.aspects`.
 - [x] 8. Add `__all__ = ["IVPNClient", "VPNStatus"]`.
 
 ## Testing

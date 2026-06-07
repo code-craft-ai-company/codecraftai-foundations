@@ -3,7 +3,7 @@
 ## Introduction
 
 The `vpn-client-protocol` feature introduces the `IVPNClient` Python `Protocol`
-into `automojo-interfaces`. The protocol defines the host-side surface for a
+into `codecraftai-interfaces`. The protocol defines the host-side surface for a
 mesh-VPN daemon (Tailscale `tailscaled`, Twingate connector) such that
 sysman, interop, landscaping, and provisioning packages depend only on the
 contract — never on a concrete vendor client. The protocol is a peer to the
@@ -15,7 +15,7 @@ callers control retries, timeouts, and logging from the outside. No
 behaviour-modifying decorators appear on the protocol surface.
 
 This spec defines the *contract only*. Concrete clients
-(`vpn-tailscale-client`, `vpn-twingate-client`) live in `automojo-interop` and
+(`vpn-tailscale-client`, `vpn-twingate-client`) live in `codecraftai-interop` and
 implement this protocol.
 
 **See Also:** [vpn-control-plane-protocol](../vpn-control-plane-protocol/design.md),
@@ -59,7 +59,7 @@ entry point so that destroy flows work the same on every vendor.
 2. WHEN the daemon is already down THE SYSTEM SHALL allow implementations to
    return `None` without raising (idempotent semantics in the contract).
 3. THE SYSTEM SHALL document that `bring_down` does not uninstall the daemon;
-   uninstallation is owned by `automojo-sysman-*` per OS.
+   uninstallation is owned by `codecraftai-sysman-*` per OS.
 
 ---
 

@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.ihint` module.
+    Unit tests for the :mod:`ccai.interfaces.ihint` module.
 """
 
 import inspect
@@ -7,7 +7,7 @@ import unittest
 from typing import Any
 from unittest.mock import MagicMock
 
-from automojo.interfaces.ihint import IHint
+from ccai.interfaces.ihint import IHint
 
 
 class TestIHintProtocol(unittest.TestCase):

@@ -2,7 +2,7 @@
 
 ## Module and Models
 
-- [x] 1. Create `automojo-interfaces/source/packages/automojo/interfaces/ivpncontrolplane.py`.
+- [x] 1. Create `codecraftai-interfaces/source/packages/ccai/interfaces/ivpncontrolplane.py`.
 - [x] 2. Define `VPNDeviceRecord` dataclass with fields listed in the design.
 - [x] 3. Define `IVPNControlPlane(Protocol)` with the four methods listed.
 - [x] 4. Add module-level Sphinx docstring and per-method docstrings.
@@ -12,7 +12,7 @@
 - [x] 5. Confirm every method uses keyword-only parameters.
 - [x] 6. Confirm every method declares `aspects: Aspects`.
 - [x] 7. Confirm no third-party imports — only `typing`, `dataclasses`,
-  `automojo.aspects.aspects`.
+  `ccai.aspects.aspects`.
 - [x] 8. Add `__all__ = ["IVPNControlPlane", "VPNDeviceRecord"]`.
 - [x] 9. Document `apply_acl` provider-specificity note in the docstring
   (Tailscale flat ACL vs Twingate RBAC).

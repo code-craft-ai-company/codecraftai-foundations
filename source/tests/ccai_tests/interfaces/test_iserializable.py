@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.iserializable` module.
+    Unit tests for the :mod:`ccai.interfaces.iserializable` module.
 """
 
 import inspect
@@ -7,7 +7,7 @@ import unittest
 from typing import Any, Dict
 from unittest.mock import MagicMock
 
-from automojo.interfaces.iserializable import ISerializable
+from ccai.interfaces.iserializable import ISerializable
 
 
 class TestISerializableProtocol(unittest.TestCase):

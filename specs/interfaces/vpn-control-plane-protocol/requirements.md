@@ -14,12 +14,12 @@ independently of the local installation.
 
 The protocol takes credentials as typed objects (never bare tokens)
 and uses Aspects on every call. Implementations live in
-`automojo-interop/vpn/<provider>/<provider>controlplane.py` and are
+`codecraftai-interop/vpn/<provider>/<provider>controlplane.py` and are
 built on `RestClientBase`.
 
 **See Also:** [vpn-client-protocol](../vpn-client-protocol/design.md),
-[tailscale-credentials](../../../automojo-credentials/specs/tailscale-credentials/design.md),
-[twingate-credentials](../../../automojo-credentials/specs/twingate-credentials/design.md).
+[tailscale-credentials](../../../codecraftai-credentials/specs/tailscale-credentials/design.md),
+[twingate-credentials](../../../codecraftai-credentials/specs/twingate-credentials/design.md).
 
 ---
 
@@ -127,7 +127,7 @@ to be dependency-free so it can be imported in low-tier packages.
 #### Acceptance Criteria
 
 1. THE SYSTEM SHALL import only `typing`, `dataclasses`, and
-   `automojo.aspects.aspects` in `ivpncontrolplane.py`.
+   `ccai.aspects.aspects` in `ivpncontrolplane.py`.
 2. IF a future change introduces a third-party import to the
    protocol module THEN THE SYSTEM SHALL be considered non-
    conformant.

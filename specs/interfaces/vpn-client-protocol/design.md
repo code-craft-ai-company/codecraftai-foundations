@@ -3,13 +3,13 @@
 ## Overview
 
 `IVPNClient` is a Python `Protocol` placed under
-`automojo-interfaces/source/packages/automojo/interfaces/ivpnclient.py`,
+`codecraftai-interfaces/source/packages/ccai/interfaces/ivpnclient.py`,
 alongside the existing `ICommandRunner` and `IFileOperator` protocols. It
 defines the host-side surface for a mesh-VPN daemon and the typed
 `VPNStatus` result dataclass that bring-up and status return.
 
 The protocol contains no behaviour, no imports of third-party packages, and
-no I/O. Implementations live in `automojo-interop/vpn/<provider>/` and own
+no I/O. Implementations live in `codecraftai-interop/vpn/<provider>/` and own
 the vendor specifics; sysman, landscaping, and provisioning depend on this
 protocol only.
 
@@ -23,7 +23,7 @@ The contract honours the §8 usability commitments:
 
 **See Also:** [vpn-control-plane-protocol](../vpn-control-plane-protocol/design.md),
 [address-plane-types](../address-plane-types/design.md),
-[vpn-overlay-profile](../../../automojo-networking/specs/vpn-overlay-profile/design.md).
+[vpn-overlay-profile](../../../codecraftai-networking/specs/vpn-overlay-profile/design.md).
 
 ---
 
@@ -42,7 +42,7 @@ The contract honours the §8 usability commitments:
               |                                                     |
    +----------v------------+                          +-------------v---------+
    | TailscaleClient       |                          | TwingateClient        |
-   | (automojo-interop/    |                          | (automojo-interop/    |
+   | (codecraftai-interop/    |                          | (codecraftai-interop/    |
    |  vpn/tailscale/)      |                          |  vpn/twingate/)       |
    | drives `tailscale up` |                          | drives twingate CLI   |
    | via ICommandRunner    |                          | via ICommandRunner    |
@@ -57,7 +57,7 @@ The contract honours the §8 usability commitments:
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Protocol
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 @dataclass
@@ -115,7 +115,7 @@ class IVPNClient(Protocol):
 ## Module Layout
 
 ```
-automojo-interfaces/source/packages/automojo/interfaces/
+codecraftai-interfaces/source/packages/ccai/interfaces/
   __init__.py
   ivpnclient.py            <-- IVPNClient + VPNStatus
   ivpncontrolplane.py      (see sibling spec)
@@ -126,7 +126,7 @@ automojo-interfaces/source/packages/automojo/interfaces/
 ```
 
 `ivpnclient.py` MUST NOT import any third-party package. `Aspects` is
-imported from `automojo.aspects.aspects`.
+imported from `ccai.aspects.aspects`.
 
 ---
 
@@ -137,8 +137,8 @@ imported from `automojo.aspects.aspects`.
 - [address-plane-types](../address-plane-types/design.md) — `AddressPlane`
   enum and `IDeviceAddressSet`; the surface that consumes
   `IVPNClient.self_address()` / `IVPNClient.peer_addresses()`.
-- [tailscale-credentials](../../../automojo-credentials/specs/tailscale-credentials/design.md).
-- [twingate-credentials](../../../automojo-credentials/specs/twingate-credentials/design.md).
+- [tailscale-credentials](../../../codecraftai-credentials/specs/tailscale-credentials/design.md).
+- [twingate-credentials](../../../codecraftai-credentials/specs/twingate-credentials/design.md).
 
 ---
 

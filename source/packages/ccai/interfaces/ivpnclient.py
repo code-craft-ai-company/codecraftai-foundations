@@ -7,21 +7,21 @@
 
     ``IVPNClient`` is the host-side contract for a mesh-VPN daemon
     (Tailscale ``tailscaled``, Twingate connector). Concrete implementations
-    live under ``automojo-interop/vpn/<provider>/``; this module is the
+    live under ``codecraftai-interop/vpn/<provider>/``; this module is the
     dependency-free contract those implementations honour.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Protocol, runtime_checkable
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 @dataclass
