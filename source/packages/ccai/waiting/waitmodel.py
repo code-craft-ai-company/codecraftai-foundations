@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -20,7 +20,7 @@ import threading
 
 from datetime import datetime, timedelta
 
-from automojo.waiting.constants import (
+from ccai.waiting.constants import (
     TimeoutState,
     MSG_TEMPL_TIME_COMPONENTS,
 )

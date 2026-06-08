@@ -5,9 +5,9 @@ import concurrent.futures
 import time
 import traceback
 
-from automojo.waiting.constants import DEFAULT_WAIT_TIMEOUT, DEFAULT_WAIT_INTERVAL
-from automojo.waiting.waitfunction import wait_for_it
-from automojo.waiting.waitmodel import WaitContext
+from ccai.waiting.constants import DEFAULT_WAIT_TIMEOUT, DEFAULT_WAIT_INTERVAL
+from ccai.waiting.waitfunction import wait_for_it
+from ccai.waiting.waitmodel import WaitContext
 
 class TestWaitForIt(unittest.TestCase):
 

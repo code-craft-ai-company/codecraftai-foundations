@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -16,14 +16,14 @@ from typing import Any, Dict, Optional
 import time
 
 
-from automojo.waiting.constants import (
+from ccai.waiting.constants import (
     DEFAULT_WAIT_DELAY,
     DEFAULT_WAIT_INTERVAL,
     DEFAULT_WAIT_TIMEOUT
 )
 
 
-from automojo.waiting.waitmodel import WaitCallback, WaitContext
+from ccai.waiting.waitmodel import WaitCallback, WaitContext
 
 
 def wait_for_it(looper: WaitCallback, *largs, what_for: Optional[str]=None, delay: float=DEFAULT_WAIT_DELAY,

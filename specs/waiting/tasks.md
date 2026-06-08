@@ -19,14 +19,14 @@ Tasks that address gaps or issues that must be resolved.
 **Status:** Completed  
 **Requirements:** REQ-001, REQ-002, REQ-003  
 **Description:** Implement the core `wait_for_it` function with polling mechanism  
-**Implementation:** `source/packages/automojo/waiting/waitfunction.py`  
+**Implementation:** `source/packages/ccai/waiting/waitfunction.py`  
 **Validation:** Function exists with proper signature and basic polling logic
 
 ### 🟢 TASK-002: Implement Timeout Management
 **Status:** Completed  
 **Requirements:** REQ-002, REQ-006  
 **Description:** Create timeout tracking and state management  
-**Implementation:** `source/packages/automojo/waiting/waitmodel.py` - `TimeoutContext` class  
+**Implementation:** `source/packages/ccai/waiting/waitmodel.py` - `TimeoutContext` class  
 **Validation:** Timeout states and timing calculations are implemented
 
 ### 🟢 TASK-003: Implement Final Attempt Mechanism
