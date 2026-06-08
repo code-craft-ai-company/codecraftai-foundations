@@ -1,9 +1,9 @@
 """
     .. module:: test_raising
         :platform: Darwin, Linux, Unix, Windows
-        :synopsis: Unit tests covering the helpers in :mod:`automojo.errors.raising`.
+        :synopsis: Unit tests covering the helpers in :mod:`ccai.errors.raising`.
 
-    .. moduleauthor:: Automation Mojo
+    .. moduleauthor:: Code Craft AI
 """
 
 import os
@@ -11,8 +11,8 @@ import unittest
 
 from http.client import HTTPException
 
-from automojo.errors import exceptions
-from automojo.errors import raising
+from ccai.errors import exceptions
+from ccai.errors import raising
 
 
 class TestFormatHttpErrorMessage(unittest.TestCase):

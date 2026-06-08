@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 from typing import Optional
@@ -16,7 +16,7 @@ import os
 
 from http.client import HTTPException
 
-from automojo.errors import exceptions
+from ccai.errors import exceptions
 
 
 STATUS_TO_EXCEPTION_TABLE = {

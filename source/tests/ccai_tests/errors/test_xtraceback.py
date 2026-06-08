@@ -1,9 +1,9 @@
 """
     .. module:: test_xtraceback
         :platform: Darwin, Linux, Unix, Windows
-        :synopsis: Unit tests covering the helpers in :mod:`automojo.errors.xtraceback`.
+        :synopsis: Unit tests covering the helpers in :mod:`ccai.errors.xtraceback`.
 
-    .. moduleauthor:: Automation Mojo
+    .. moduleauthor:: Code Craft AI
 """
 
 import os
@@ -12,7 +12,7 @@ import unittest
 from typing import Dict, List
 from unittest import mock
 
-from automojo.errors import xtraceback
+from ccai.errors import xtraceback
 
 
 class TestTracebackFormatPolicy(unittest.TestCase):
