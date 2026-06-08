@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.ifileoperator` module.
+    Unit tests for the :mod:`ccai.interfaces.ifileoperator` module.
 """
 
 import inspect
@@ -7,7 +7,7 @@ import unittest
 from typing import List
 from unittest.mock import MagicMock
 
-from automojo.interfaces.ifileoperator import IFileOperator
+from ccai.interfaces.ifileoperator import IFileOperator
 
 
 class TestIFileOperatorProtocol(unittest.TestCase):

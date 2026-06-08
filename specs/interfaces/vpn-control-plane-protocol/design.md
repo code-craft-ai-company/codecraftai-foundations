@@ -3,7 +3,7 @@
 ## Overview
 
 `IVPNControlPlane` is a Python `Protocol` placed under
-`automojo-interfaces/source/packages/automojo/interfaces/ivpncontrolplane.py`.
+`codecraftai-interfaces/source/packages/ccai/interfaces/ivpncontrolplane.py`.
 It defines the API-side surface for a mesh-VPN control plane and the typed
 `VPNDeviceRecord` dataclass that `list_devices` returns.
 
@@ -22,7 +22,7 @@ implement both.
 **See Also:** [vpn-client-protocol](../vpn-client-protocol/design.md),
 [address-plane-types](../address-plane-types/design.md),
 [task-handle-protocol](../task-handle-protocol/design.md),
-[restapigroup-enhancements](../../../automojo-restclient-base/specs/restapigroup-enhancements/design.md).
+[restapigroup-enhancements](../../../codecraftai-restclient-base/specs/restapigroup-enhancements/design.md).
 
 ---
 
@@ -58,7 +58,7 @@ implement both.
 from dataclasses import dataclass, field
 from typing import List, Optional, Protocol
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 @dataclass
@@ -113,7 +113,7 @@ class IVPNControlPlane(Protocol):
 ## Module Layout
 
 ```
-automojo-interfaces/source/packages/automojo/interfaces/
+codecraftai-interfaces/source/packages/ccai/interfaces/
   ivpncontrolplane.py     <-- IVPNControlPlane + VPNDeviceRecord
   ivpnclient.py           (sibling spec)
   iaddressplane.py        (sibling spec)
@@ -126,11 +126,11 @@ automojo-interfaces/source/packages/automojo/interfaces/
 
 - [vpn-client-protocol](../vpn-client-protocol/design.md) — the local-
   daemon surface, peer to this protocol.
-- [tailscale-credentials](../../../automojo-credentials/specs/tailscale-credentials/design.md)
+- [tailscale-credentials](../../../codecraftai-credentials/specs/tailscale-credentials/design.md)
   — `TailscaleOAuthCredential` is the canonical credential consumed by
   `mint_authkey`.
-- [twingate-credentials](../../../automojo-credentials/specs/twingate-credentials/design.md).
-- [task-handle-base](../../../automojo-restclient-base/specs/task-handle-base/design.md)
+- [twingate-credentials](../../../codecraftai-credentials/specs/twingate-credentials/design.md).
+- [task-handle-base](../../../codecraftai-restclient-base/specs/task-handle-base/design.md)
   — referenced for clients that surface long-running operations.
 
 ---
@@ -144,5 +144,5 @@ The protocol is a typing artefact; no runtime computation lives here.
 - **Protocol-shape test.** Each method's signature matches the design.
 - **Conformance fixture.** A `MockVPNControlPlane` lives in the test root
   and is reused by `TailscaleControlPlane` / `TwingateControlPlane`
-  conformance tests in `automojo-interop`.
+  conformance tests in `codecraftai-interop`.
 - **No property tests required** — pure protocol, no computation.

@@ -7,21 +7,21 @@
 
     ``IVPNControlPlane`` is the API-side contract for talking to a mesh-VPN
     control plane (``api.tailscale.com``, Twingate GraphQL). It is separate
-    from :class:`automojo.interfaces.ivpnclient.IVPNClient`, which talks to
+    from :class:`ccai.interfaces.ivpnclient.IVPNClient`, which talks to
     the local daemon.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
 from dataclasses import dataclass, field
 from typing import List, Optional, Protocol, runtime_checkable
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 @dataclass
@@ -52,7 +52,7 @@ class IVPNControlPlane(Protocol):
 
         Implementations are built on ``RestClientBase`` (or a GraphQL
         equivalent) and consume typed credential objects from
-        ``automojo-credentials``. All behaviour-bearing methods accept an
+        ``codecraftai-credentials``. All behaviour-bearing methods accept an
         :class:`Aspects` instance.
     """
 

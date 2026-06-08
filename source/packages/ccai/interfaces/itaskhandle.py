@@ -15,7 +15,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from enum import IntEnum
 from typing import Optional, Protocol, runtime_checkable
 
-from automojo.aspects.aspects import Aspects
+from ccai.aspects.aspects import Aspects
 
 
 class TaskState(IntEnum):

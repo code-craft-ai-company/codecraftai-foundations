@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.iexcludefilter` module.
+    Unit tests for the :mod:`ccai.interfaces.iexcludefilter` module.
 """
 
 import inspect
@@ -7,7 +7,7 @@ import unittest
 from typing import Any, List
 from unittest.mock import MagicMock
 
-from automojo.interfaces.iexcludefilter import IExcludeFilter
+from ccai.interfaces.iexcludefilter import IExcludeFilter
 
 
 class TestIExcludeFilterProtocol(unittest.TestCase):

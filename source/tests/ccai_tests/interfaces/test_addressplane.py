@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.addressplane` module.
+    Unit tests for the :mod:`ccai.interfaces.addressplane` module.
 
     Includes both example-based tests and hypothesis property tests covering
     the totality, idempotence, ordering, and round-trip invariants required
@@ -13,7 +13,7 @@ from typing import List, Optional, Tuple
 from hypothesis import given
 from hypothesis import strategies as st
 
-from automojo.interfaces.addressplane import (
+from ccai.interfaces.addressplane import (
     AddressPlane,
     DeviceAddressSetSnapshot,
     IDeviceAddressSet,

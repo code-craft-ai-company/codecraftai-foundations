@@ -2,7 +2,7 @@
 
 ## Module and Models
 
-- [x] 1. Create `automojo-interfaces/source/packages/automojo/interfaces/iaddressplane.py`.
+- [x] 1. Create `codecraftai-interfaces/source/packages/ccai/interfaces/iaddressplane.py`.
 - [x] 2. Define `AddressPlane(IntEnum)` with `PUBLIC=1`, `PRIVATE=2`,
   `OVERLAY=3`.
 - [x] 3. Define `IDeviceAddressSet(Protocol)` with the six methods listed

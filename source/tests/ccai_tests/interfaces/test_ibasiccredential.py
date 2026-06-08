@@ -1,12 +1,12 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.ibasiccredential` module.
+    Unit tests for the :mod:`ccai.interfaces.ibasiccredential` module.
 """
 
 import inspect
 import unittest
 from unittest.mock import MagicMock
 
-from automojo.interfaces.ibasiccredential import IBasicCredential
+from ccai.interfaces.ibasiccredential import IBasicCredential
 
 
 class TestIBasicCredentialProtocol(unittest.TestCase):

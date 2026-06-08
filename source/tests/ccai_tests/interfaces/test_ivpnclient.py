@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.ivpnclient` module.
+    Unit tests for the :mod:`ccai.interfaces.ivpnclient` module.
 """
 
 import dataclasses
@@ -8,8 +8,8 @@ import typing
 import unittest
 from typing import Dict, List, Optional
 
-from automojo.aspects.aspects import Aspects
-from automojo.interfaces.ivpnclient import IVPNClient, VPNStatus
+from ccai.aspects.aspects import Aspects
+from ccai.interfaces.ivpnclient import IVPNClient, VPNStatus
 
 
 class MockVPNClient:

@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.itestjob` module.
+    Unit tests for the :mod:`ccai.interfaces.itestjob` module.
 """
 
 import inspect
@@ -7,7 +7,7 @@ import unittest
 from typing import Any, List
 from unittest.mock import MagicMock
 
-from automojo.interfaces.itestjob import ITestJob
+from ccai.interfaces.itestjob import ITestJob
 
 
 class TestITestJobProtocol(unittest.TestCase):

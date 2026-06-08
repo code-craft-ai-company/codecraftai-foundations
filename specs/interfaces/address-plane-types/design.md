@@ -4,7 +4,7 @@
 
 The `address-plane-types` module formalises the multi-plane addressing
 model from §1 of `PLAN-VPN-AND-CLOUD-PROVISIONING.md`. It contributes
-two artefacts to `automojo-interfaces`:
+two artefacts to `codecraftai-interfaces`:
 
 1. `AddressPlane` — a small `IntEnum` (`PUBLIC`, `PRIVATE`, `OVERLAY`).
 2. `IDeviceAddressSet` — a `Protocol` describing the read surface of a
@@ -22,8 +22,8 @@ this module load-bearing. The single-string `_host` field on landscape
 devices is *removed*, not deprecated, once consumers adopt this surface.
 
 **See Also:** [vpn-client-protocol](../vpn-client-protocol/design.md),
-[address-plane-resolution](../../../automojo-networking/specs/address-plane-resolution/design.md),
-[vpn-overlay-profile](../../../automojo-networking/specs/vpn-overlay-profile/design.md).
+[address-plane-resolution](../../../codecraftai-networking/specs/address-plane-resolution/design.md),
+[vpn-overlay-profile](../../../codecraftai-networking/specs/vpn-overlay-profile/design.md).
 
 ---
 
@@ -31,7 +31,7 @@ devices is *removed*, not deprecated, once consumers adopt this surface.
 
 ```
 +------------------------------------------------------------------+
-| automojo-interfaces                                              |
+| codecraftai-interfaces                                              |
 |                                                                  |
 |  +---------------------+        +-----------------------------+  |
 |  | AddressPlane        |        | IDeviceAddressSet           |  |
@@ -50,7 +50,7 @@ devices is *removed*, not deprecated, once consumers adopt this surface.
                   | implements                              | consumes
    +--------------+---------------+         +---------------+----------------+
    | DeviceAddressSet             |         | resolve_in_plane(name, plane)  |
-   | (automojo-landscaping)       |         | (automojo-networking)          |
+   | (codecraftai-landscaping)       |         | (codecraftai-networking)          |
    +------------------------------+         +--------------------------------+
 ```
 
@@ -153,7 +153,7 @@ project standards.
 ## Module Layout
 
 ```
-automojo-interfaces/source/packages/automojo/interfaces/
+codecraftai-interfaces/source/packages/ccai/interfaces/
   iaddressplane.py    <-- AddressPlane, IDeviceAddressSet,
                           DeviceAddressSetSnapshot
 ```
@@ -165,9 +165,9 @@ automojo-interfaces/source/packages/automojo/interfaces/
 - [vpn-client-protocol](../vpn-client-protocol/design.md) — supplies
   `IVPNClient.self_address()` / `peer_addresses()` consumed by the
   landscape implementation of `IDeviceAddressSet`.
-- [address-plane-resolution](../../../automojo-networking/specs/address-plane-resolution/design.md)
+- [address-plane-resolution](../../../codecraftai-networking/specs/address-plane-resolution/design.md)
   — `resolve_in_plane(name, plane, aspects)` is the canonical caller.
-- [interface-class-vpn-overlay](../../../automojo-networking/specs/interface-class-vpn-overlay/design.md)
+- [interface-class-vpn-overlay](../../../codecraftai-networking/specs/interface-class-vpn-overlay/design.md)
   — `InterfaceClass.VPN_OVERLAY` is the per-NIC equivalent of
   `AddressPlane.OVERLAY` and pairs with this enum at the descriptor
   level.

@@ -1,5 +1,5 @@
 """
-    Unit tests for the :mod:`automojo.interfaces.icommandrunner` module.
+    Unit tests for the :mod:`ccai.interfaces.icommandrunner` module.
 """
 
 import dataclasses
@@ -8,7 +8,7 @@ import unittest
 from typing import Callable, Dict, List, Optional
 from unittest.mock import MagicMock
 
-from automojo.interfaces.icommandrunner import ICommandRunner, RunResult
+from ccai.interfaces.icommandrunner import ICommandRunner, RunResult
 
 
 class TestRunResultDataclass(unittest.TestCase):

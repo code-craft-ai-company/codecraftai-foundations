@@ -15,7 +15,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -118,7 +118,7 @@ class DeviceAddressSetSnapshot:
         tests and for callers that already have all addresses in hand.
 
         Landscape coordinators should use the richer ``DeviceAddressSet``
-        in ``automojo-landscaping``; this snapshot is a contract-layer
+        in ``codecraftai-landscaping``; this snapshot is a contract-layer
         convenience.
 
         :param public_address: The public-plane address, or ``None``.
