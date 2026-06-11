@@ -1,4 +1,4 @@
-# AutoMojo Errors Package Requirements
+# Code Craft AI Errors Package Requirements
 
 ## 1. Purpose and Scope
 

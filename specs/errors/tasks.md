@@ -1,4 +1,4 @@
-# AutoMojo Errors Package Implementation Tasks
+# Code Craft AI Errors Package Implementation Tasks
 
 ## 1. Package Structure and Organization
 

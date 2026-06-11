@@ -1,4 +1,4 @@
-# AutoMojo Errors Package Design
+# Code Craft AI Errors Package Design
 
 ## Overview
 
