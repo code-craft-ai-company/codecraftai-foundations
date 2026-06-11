@@ -180,6 +180,37 @@ class TestRaiseForHttpStatus(unittest.TestCase):
             )
         return
 
+    def test_status_412_maps_to_precondition_failed(self) -> None:
+        """
+            Verifies 412 maps to :class:`HttpPreConditionFailedError` (the 412
+            type), not :class:`HttpPreconditionRequiredError` (the 428 type).
+            Regression guard for the prior mis-mapping.
+
+            :returns: ``None``
+        """
+        with self.assertRaises(exceptions.HttpPreConditionFailedError):
+            raising.raise_for_http_status(
+                resp_code=412,
+                resp_msg="Precondition Failed",
+                call_url="http://x"
+            )
+        return
+
+    def test_status_428_maps_to_precondition_required(self) -> None:
+        """
+            Verifies 428 still maps to :class:`HttpPreconditionRequiredError`
+            (ensures the 412 fix did not disturb the 428 mapping).
+
+            :returns: ``None``
+        """
+        with self.assertRaises(exceptions.HttpPreconditionRequiredError):
+            raising.raise_for_http_status(
+                resp_code=428,
+                resp_msg="Precondition Required",
+                call_url="http://x"
+            )
+        return
+
     def test_known_5xx_status_raises_specific(self) -> None:
         """
             Verifies a known 5xx status raises the mapped exception type.

@@ -41,7 +41,7 @@ STATUS_TO_EXCEPTION_TABLE = {
     409: exceptions.HttpConflictError,
     410: exceptions.HttpGoneError,
     411: exceptions.HttpLengthRequiredError,
-    412: exceptions.HttpPreconditionRequiredError,
+    412: exceptions.HttpPreConditionFailedError,
     413: exceptions.HttpPayloadTooLargeError,
     414: exceptions.HttpUriTooLongError,
     415: exceptions.HttpUnSupportedMediaTypeError,

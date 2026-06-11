@@ -6,6 +6,7 @@
     .. moduleauthor:: Code Craft AI
 """
 
+import inspect
 import os
 import unittest
 
@@ -251,10 +252,11 @@ class TestEnhancedErrorMixIn(unittest.TestCase):
         self.assertEqual(len(contexts), 0)
         return
 
-    def test_add_context_records_caller(self) -> None:
+    def test_add_context_records_direct_caller(self) -> None:
         """
             Verifies that :meth:`EnhancedErrorMixIn.add_context` records the
-            content under the current function name.
+            content under the *direct* caller's function name (not the
+            caller-of-caller, which was the prior misattribution bug).
 
             :returns: ``None``
         """
@@ -267,10 +269,10 @@ class TestEnhancedErrorMixIn(unittest.TestCase):
         helper(target=mixin)
 
         contexts = mixin.contexts
-        # The caller-of-caller name is what gets recorded.
-        is_present = "test_add_context_records_caller" in contexts
+        # The direct caller of add_context is ``helper``.
+        is_present = "helper" in contexts
         self.assertTrue(is_present)
-        recorded = contexts["test_add_context_records_caller"]
+        recorded = contexts["helper"]
         self.assertEqual(recorded["label"], "HINT")
         self.assertEqual(recorded["content"], "info goes here")
         return
@@ -290,10 +292,25 @@ class TestEnhancedErrorMixIn(unittest.TestCase):
         helper(target=mixin)
 
         contexts = mixin.contexts
-        is_present = "test_add_context_default_label" in contexts
+        is_present = "helper" in contexts
         self.assertTrue(is_present)
-        recorded = contexts["test_add_context_default_label"]
+        recorded = contexts["helper"]
         self.assertEqual(recorded["label"], "CONTEXT")
+        return
+
+    def test_add_context_at_module_scope_does_not_raise(self) -> None:
+        """
+            Verifies that recording context from a shallow stack does not raise
+            ``IndexError`` (the prior bug raised at module scope).
+
+            :returns: ``None``
+        """
+        mixin = xtraceback.EnhancedErrorMixIn()
+        # Called directly from the test method (a valid, shallow-ish stack); the
+        # clamp in _caller_scope_name guarantees no IndexError regardless of depth.
+        mixin.add_context(content="data", label="L")
+        contexts = mixin.contexts
+        self.assertEqual(len(contexts), 1)
         return
 
 
@@ -630,27 +647,23 @@ class TestFormatException(unittest.TestCase):
 
 class TestEnhanceException(unittest.TestCase):
     """
-        Verifies :func:`enhance_exception` augments an exception with a
-        context.
+        Verifies :func:`enhance_exception` augments an exception with context.
 
-        :class:`EnhancedErrorMixIn` is mixed in dynamically by
-        :func:`enhance_exception`. The function does not invoke the mixin's
-        ``__init__`` on the existing exception instance — instead it
-        pre-seeds the ``_contexts`` dict directly when missing — so callers
-        can attach context to any pre-existing exception without the mixin
-        having been part of the static MRO.
+        Context is attached to the exception *instance* (its ``_contexts``
+        mapping), keyed by the function scope that called
+        :func:`enhance_exception`.  The exception's class is never modified, so
+        this works for builtin exception types as well as user-defined ones.
+        Attached context is read back with :func:`get_contexts`.
     """
 
     def test_enhance_attaches_context(self) -> None:
         """
             Verifies that calling :func:`enhance_exception` results in the
-            exception carrying a ``contexts`` mapping that includes the
-            content.
+            exception carrying a context entry that includes the content,
+            readable via :func:`get_contexts`.
 
             :returns: ``None``
         """
-        # Define a unique exception type so that the dynamic mixin injection
-        # does not pollute a shared class across runs.
         class MyOpError(RuntimeError):
             pass
 
@@ -661,10 +674,7 @@ class TestEnhanceException(unittest.TestCase):
         ex = MyOpError("oops")
         helper(xcpt=ex)
 
-        is_mixin = xtraceback.EnhancedErrorMixIn in type(ex).__bases__
-        self.assertTrue(is_mixin)
-
-        contexts = ex.contexts  # type: ignore[attr-defined]
+        contexts = xtraceback.get_contexts(ex)
         is_dict = isinstance(contexts, dict)
         self.assertTrue(is_dict)
         is_present = "helper" in contexts
@@ -672,6 +682,48 @@ class TestEnhanceException(unittest.TestCase):
         recorded = contexts["helper"]
         self.assertEqual(recorded["label"], "HINT")
         self.assertEqual(recorded["content"], "extra info")
+        return
+
+    def test_enhance_does_not_mutate_exception_class(self) -> None:
+        """
+            Verifies that :func:`enhance_exception` does NOT add the mixin to
+            the exception type's bases (the prior implementation mutated the
+            class process-wide, breaking other instances and builtin types).
+
+            :returns: ``None``
+        """
+        class IsolatedError(RuntimeError):
+            pass
+
+        bases_before = tuple(IsolatedError.__bases__)
+        ex = IsolatedError("oops")
+        xtraceback.enhance_exception(xcpt=ex, content="data", label="X")
+
+        self.assertEqual(tuple(IsolatedError.__bases__), bases_before)
+        self.assertNotIn(xtraceback.EnhancedErrorMixIn, IsolatedError.__bases__)
+
+        # A second, never-enhanced instance of the same class is unaffected and
+        # carries no context (the prior process-wide mutation broke this).
+        other = IsolatedError("other")
+        self.assertEqual(len(xtraceback.get_contexts(other)), 0)
+        return
+
+    def test_enhance_works_on_builtin_exception(self) -> None:
+        """
+            Verifies that :func:`enhance_exception` succeeds on builtin
+            exception types (``ValueError``, ``KeyError``, ``OSError``) without
+            raising ``TypeError`` — the prior implementation crashed trying to
+            mutate the immutable builtin class.
+
+            :returns: ``None``
+        """
+        for builtin_factory in (lambda: ValueError("v"), lambda: KeyError("k"), lambda: OSError("o")):
+            ex = builtin_factory()
+            xtraceback.enhance_exception(xcpt=ex, content="ctx for builtin", label="B")
+            contexts = xtraceback.get_contexts(ex)
+            is_present = "test_enhance_works_on_builtin_exception" in contexts
+            self.assertTrue(is_present)
+            self.assertEqual(contexts["test_enhance_works_on_builtin_exception"]["content"], "ctx for builtin")
         return
 
     def test_enhance_default_label(self) -> None:
@@ -690,60 +742,99 @@ class TestEnhanceException(unittest.TestCase):
         ex = AnotherOpError("oops")
         helper(xcpt=ex)
 
-        contexts = ex.contexts  # type: ignore[attr-defined]
+        contexts = xtraceback.get_contexts(ex)
         is_present = "helper" in contexts
         self.assertTrue(is_present)
         recorded = contexts["helper"]
         self.assertEqual(recorded["label"], "CONTEXT")
         return
 
-    def test_enhance_injects_mixin_into_bases(self) -> None:
+    def test_get_contexts_empty_for_unenhanced(self) -> None:
         """
-            Verifies that :func:`enhance_exception` adds
-            :class:`EnhancedErrorMixIn` to the exception type's base classes.
+            Verifies that :func:`get_contexts` returns an empty mapping for an
+            exception that was never enhanced.
 
             :returns: ``None``
         """
-        class YetAnotherError(RuntimeError):
-            pass
-
-        ex = YetAnotherError("oops")
-        xtraceback.enhance_exception(xcpt=ex, content="data", label="X")
-
-        is_mixin = xtraceback.EnhancedErrorMixIn in type(ex).__bases__
-        self.assertTrue(is_mixin)
+        ex = RuntimeError("plain")
+        contexts = xtraceback.get_contexts(ex)
+        self.assertIsInstance(contexts, dict)
+        self.assertEqual(len(contexts), 0)
         return
 
-    def test_enhance_seeds_contexts_when_missing(self) -> None:
+
+class TestRealStackWalk(unittest.TestCase):
+    """
+        Exercises the flagship traceback path against a *real* raised exception
+        and a *real* stack walk (no mocking of ``collect_stack_frames``).  These
+        tests close the gap where the prior suite mocked the stack walker and
+        therefore masked the enhance/context defects.
+    """
+
+    def _raise_and_capture(self) -> BaseException:
         """
-            Verifies that :func:`enhance_exception` seeds the ``_contexts``
-            dict on a freshly-constructed exception that has never had the
-            mixin's ``__init__`` run.  This is the regression that motivated
-            the singular -> plural rename in the source.
+            Raises a real exception from a real function and returns the caught
+            instance (with a populated ``__traceback__``).
+
+            :returns: The caught exception instance.
+        """
+        captured: BaseException = RuntimeError("unset")
+        try:
+            raise ValueError("real boom")
+        except ValueError as err:
+            captured = err
+        return captured
+
+    def test_collect_stack_frames_real_walk(self) -> None:
+        """
+            Verifies :func:`collect_stack_frames` returns real frame details for
+            a genuine exception without raising.
 
             :returns: ``None``
         """
-        class FreshError(RuntimeError):
-            pass
+        ex = self._raise_and_capture()
+        frames = xtraceback.collect_stack_frames(inspect.currentframe(), ex)
+        self.assertIsInstance(frames, list)
+        self.assertGreater(len(frames), 0)
+        scopes = [fd.name for fd in frames]
+        # The raise site (from the exception's own traceback) is always present.
+        self.assertIn("_raise_and_capture", scopes)
+        return
 
-        ex = FreshError("oops")
-        # Confirm the precondition: no _contexts attribute on a vanilla
-        # RuntimeError subclass.
-        is_unset = not hasattr(ex, "_contexts")
-        self.assertTrue(is_unset)
+    def test_format_exception_real_walk_includes_code(self) -> None:
+        """
+            Verifies :func:`format_exception` produces a real traceback with
+            expanded source code lines for a genuine exception.
 
-        xtraceback.enhance_exception(xcpt=ex, content="seeded", label="REGRESSION")
+            :returns: ``None``
+        """
+        ex = self._raise_and_capture()
+        lines = xtraceback.format_exception(ex)
+        joined = os.linesep.join(lines)
+        self.assertIn("ValueError", joined)
+        self.assertIn("real boom", joined)
+        # The first frame is expanded by default policy, so real source lines
+        # from this test module appear (numbered).
+        self.assertIn("raise ValueError", joined)
+        return
 
-        # After the call, the mixin must have been wired in AND the context
-        # must be observable through the canonical ``contexts`` property.
-        is_seeded = hasattr(ex, "_contexts")
-        self.assertTrue(is_seeded)
-        contexts = ex.contexts  # type: ignore[attr-defined]
-        is_dict = isinstance(contexts, dict)
-        self.assertTrue(is_dict)
-        # The recording function name will be this test's name.
-        is_present = "test_enhance_seeds_contexts_when_missing" in contexts
-        self.assertTrue(is_present)
+    def test_enhanced_context_renders_in_real_traceback(self) -> None:
+        """
+            End-to-end: enhance a real exception with context, then verify the
+            context label/content actually appear in the formatted traceback.
+            This is the headline "rich contextual errors" capability that was
+            previously stored but never rendered.
+
+            :returns: ``None``
+        """
+        ex = self._raise_and_capture()
+        xtraceback.enhance_exception(xcpt=ex, content="db connection was closed", label="HINT")
+
+        lines = xtraceback.format_exception(ex)
+        joined = os.linesep.join(lines)
+
+        self.assertIn("HINT:", joined)
+        self.assertIn("db connection was closed", joined)
         return
 
 

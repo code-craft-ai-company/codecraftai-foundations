@@ -26,6 +26,8 @@ from collections import OrderedDict
 
 from dataclasses import dataclass
 
+from ccai.errors.exceptions import SemanticError
+
 
 
 ARG_ERROR = "<error>"
@@ -57,7 +59,7 @@ class TRACEBACK_CONFIG:
 @dataclass
 class FrameDetail:
     name: str
-    line_no: str
+    line_no: int
     line_code: str
     filename: str
 
@@ -83,7 +85,7 @@ class TraceDetail:
     origin: OriginDetail
     call: str
     code: List[str]
-    context: Dict[str, List[str]]
+    context: Optional[Dict[str, str]] = None
 
 @dataclass
 class TracebackDetail:
@@ -200,22 +202,97 @@ class EnhancedErrorMixIn:
     def add_context(self, content: str, label: str = "CONTEXT") -> None:
         """
             Adds context to an exception and associates it with the function
-            context on the stack.
+            scope that called this method.
 
             :param content: The context content to attach to the exception.
             :param label: The label to prefix the context with.
 
             :returns: ``None``
         """
-        caller_stack = inspect.stack()[2]
-        caller_func_name = caller_stack.frame.f_code.co_name
-
-        self._contexts[caller_func_name] = {
-            "label": label,
-            "content": content
-        }
-
+        # Stack: [0]=_caller_scope_name, [1]=add_context, [2]=our caller.
+        scope_name = _caller_scope_name(skip=2)
+        attach_context(self, content=content, label=label, scope_name=scope_name)
         return
+
+
+def _caller_scope_name(skip: int) -> str:
+    """
+        Resolves the function scope name at ``skip`` levels up the call stack.
+
+        Guards against shallow stacks (e.g. a call made at module scope) by
+        clamping to the outermost available frame instead of raising
+        ``IndexError``.
+
+        :param skip: The number of frames above :func:`_caller_scope_name` to
+            inspect (this helper occupies index 0 of its own stack snapshot).
+
+        :returns: The ``co_name`` of the resolved frame.
+    """
+    frames = inspect.stack()
+
+    target_index = skip
+    if target_index >= len(frames):
+        target_index = len(frames) - 1
+
+    scope_frame = frames[target_index]
+    scope_name = scope_frame.frame.f_code.co_name
+
+    return scope_name
+
+
+def attach_context(xcpt: BaseException, content: str, label: str, scope_name: str) -> None:
+    """
+        Attaches a context entry to an exception *instance* under the given
+        function scope name.
+
+        The entry is stored on the instance's own ``_contexts`` mapping; the
+        exception's class is never modified, so this works for builtin
+        exception types (``ValueError``, ``KeyError``, ...) as well as for
+        user-defined ones.
+
+        :param xcpt: The exception instance to attach context to.
+        :param content: The context content.
+        :param label: The label to prefix the context with.
+        :param scope_name: The function scope name the context is associated with.
+
+        :returns: ``None``
+    """
+    contexts = getattr(xcpt, "_contexts", None)
+    if contexts is None:
+        contexts = {}
+        try:
+            setattr(xcpt, "_contexts", contexts)
+        except (AttributeError, TypeError):
+            # An exotic exception with __slots__ and no instance __dict__ cannot
+            # carry context; there is nothing further we can do, so leave it bare.
+            return
+
+    contexts[scope_name] = {
+        "label": label,
+        "content": content
+    }
+
+    return
+
+
+def get_contexts(xcpt: BaseException) -> Dict[str, Dict[str, str]]:
+    """
+        Returns the context mapping attached to an exception instance.
+
+        This is the universal accessor: it works for exceptions enhanced via
+        :func:`enhance_exception`, exceptions that statically inherit
+        :class:`EnhancedErrorMixIn`, and plain exceptions that were never
+        enhanced (which yield an empty mapping).
+
+        :param xcpt: The exception instance to read context from.
+
+        :returns: Mapping of function scope name to its context entry.
+    """
+    contexts = getattr(xcpt, "_contexts", None)
+    if contexts is None:
+        contexts = {}
+
+    return contexts
 
 
 def collect_stack_frames(calling_frame, ex_inst) -> List[FrameDetail]:
@@ -319,6 +396,8 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
 
     stack_frames = collect_stack_frames(calling_frame, ex_inst)
 
+    ex_contexts = get_contexts(ex_inst)
+
     for frame in stack_frames:
         co_module = frame.co_module
 
@@ -337,8 +416,8 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
         ntorigin = OriginDetail(file=frame.filename, lineno=frame.line_no, scope=frame.name)
 
         nt_context = None
-        if hasattr(ex_inst, "context") and frame.name in ex_inst.context:
-            nt_context = ex_inst.context[frame.name]
+        if frame.name in ex_contexts:
+            nt_context = ex_contexts[frame.name]
 
         rep_args_parts = []
         for aname, aval in frame.args.items():
@@ -350,9 +429,15 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
                 else:
                     try:
                         arep = repr(aval)
-                    except:
+                    except SemanticError:
+                        raise
+                    except Exception:
                         arep = f"<{type(aval)}>"
-            except:
+            except SemanticError:
+                # SemanticError signals API misuse and must never be silently
+                # swallowed — let it bubble out of the formatter.
+                raise
+            except Exception:
                 # We might be trying to handle a remote type or something we
                 # cannot even talk to any more.  If so, just leave the representation
                 # as an error
@@ -382,9 +467,16 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
     return tb_detail
 
 
-def enhance_exception(xcpt: BaseException, content, label="CONTEXT") -> None:
+def enhance_exception(xcpt: BaseException, content: str, label: str = "CONTEXT") -> None:
     """
-        Allows for the enhancing of exceptions.
+        Attaches contextual information to an existing exception instance.
+
+        The context is stored on the *instance* (its ``_contexts`` mapping),
+        keyed by the function scope that called this function.  The exception's
+        class is intentionally **not** modified, so this works for builtin
+        exception types (``ValueError``, ``KeyError``, ``OSError``, ...) as well
+        as user-defined ones, and never mutates a class for the whole process.
+        Read the attached context back with :func:`get_contexts`.
 
         :param xcpt: The exception instance to augment.
         :param content: Additional context information to associate with the
@@ -394,38 +486,25 @@ def enhance_exception(xcpt: BaseException, content, label="CONTEXT") -> None:
         :returns: ``None``
     """
 
-    # EnhancedErrorMixIn just uses Duck typing so it should be safe to dynamically
-    # append any exception that does not already inherit include EnhancedErrorMixIn
-    # in its base clases list.
-    xcpt_type = type(xcpt)
+    # Stack: [0]=_caller_scope_name, [1]=enhance_exception, [2]=our caller.
+    scope_name = _caller_scope_name(skip=2)
 
-    if EnhancedErrorMixIn not in xcpt_type.__bases__:
-        xcpt_type.__bases__ += (EnhancedErrorMixIn,)
-
-    enh_xcpt: EnhancedErrorMixIn = xcpt
-
-    # When EnhancedErrorMixIn is appended dynamically (rather than being a
-    # static base in the exception's MRO), the mixin's ``__init__`` was
-    # never run on this instance — so the canonical ``_contexts`` dict the
-    # mixin reads from in :meth:`add_context` will be missing.  Pre-seed it
-    # here using the same attribute name the mixin uses (plural).
-    if not hasattr(xcpt, "_contexts"):
-        setattr(enh_xcpt, "_contexts", {})
-
-    enh_xcpt.add_context(content, label=label)
+    attach_context(xcpt, content=content, label=label, scope_name=scope_name)
 
     return
 
 
-def format_exc_lines():
+def format_exc_lines() -> List[str]:
     """
         Gets a 'format_exc' result and splits it into mutliple lines.
+
+        :returns: A list of strings containing the current formatted exception.
     """
     rtn_lines = traceback.format_exc().splitlines()
     return rtn_lines
 
 
-def format_exception(ex_inst: BaseException):
+def format_exception(ex_inst: BaseException) -> List[str]:
     """
         Formats an exception into a list of traceback lines.
 
@@ -469,8 +548,13 @@ def format_traceback_detail(tbdetail: TracebackDetail) -> List[str]:
                 for nline in ntrace.code:
                     detail_lines.append(f"    {nline}")
 
+        if ntrace.context is not None:
+            context_label = ntrace.context.get("label", "CONTEXT")
+            context_content = ntrace.context.get("content", "")
+            detail_lines.append(f"    {context_label}: {context_content}")
+
         detail_lines.append("")
-    
+
     return detail_lines
 
 
