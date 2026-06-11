@@ -1,18 +1,18 @@
-# AutoMojo Interfaces Package - Requirements Document
+# Code Craft AI Interfaces Package - Requirements Document
 
 ## 1. Project Overview
 
 ### 1.1 Purpose
-The AutoMojo Interfaces package shall provide a foundational set of Python protocol-based interfaces for automation and testing frameworks, enabling standardized contracts for common automation patterns.
+The Code Craft AI Interfaces package shall provide a foundational set of Python protocol-based interfaces for automation and testing frameworks, enabling standardized contracts for common automation patterns.
 
 ### 1.2 Scope
-This package defines interface contracts only and does not provide concrete implementations. It serves as a dependency for other AutoMojo packages and third-party automation tools.
+This package defines interface contracts only and does not provide concrete implementations. It serves as a dependency for other Code Craft AI packages and third-party automation tools.
 
 ### 1.3 Target Audience
 - Automation framework developers
 - Test automation engineers
 - Python developers building testing tools
-- Integration developers working with AutoMojo ecosystem
+- Integration developers working with Code Craft AI ecosystem
 
 ## 2. Functional Requirements
 
@@ -127,7 +127,7 @@ This package defines interface contracts only and does not provide concrete impl
 
 ### 3.3 Maintainability Requirements
 
-**REQ-MAINT-001**: Code shall follow AutoMojo coding standards
+**REQ-MAINT-001**: Code shall follow Code Craft AI coding standards
 - **Acceptance Criteria**:
   - Must prioritize debuggability over performance
   - Must prioritize readability over conciseness
@@ -227,7 +227,7 @@ This package defines interface contracts only and does not provide concrete impl
 
 ## 8. Acceptance Criteria Summary
 
-The AutoMojo Interfaces package is considered complete when:
+The Code Craft AI Interfaces package is considered complete when:
 
 1. All six core interfaces (IBasicCredential, IExcludeFilter, IIncludeFilter, IHint, ISerializable, ITestJob) are properly defined
 2. All interfaces use Python Protocol for structural typing

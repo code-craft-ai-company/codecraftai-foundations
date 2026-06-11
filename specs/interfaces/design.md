@@ -1,8 +1,8 @@
-# AutoMojo Interfaces Package - Design Document
+# Code Craft AI Interfaces Package - Design Document
 
 ## Overview
 
-The AutoMojo Interfaces package is a foundational Python library that provides a collection of protocol-based interfaces for automation and testing frameworks. This package follows Python's Protocol typing system to define contracts for various automation components, enabling loose coupling and enhanced testability.
+The Code Craft AI Interfaces package is a foundational Python library that provides a collection of protocol-based interfaces for automation and testing frameworks. This package follows Python's Protocol typing system to define contracts for various automation components, enabling loose coupling and enhanced testability.
 
 ## Package Structure
 
@@ -166,4 +166,4 @@ Following the repository's unittest framework conventions:
 
 ## Conclusion
 
-The AutoMojo Interfaces package provides a solid foundation for building modular, testable automation systems. By defining clear contracts through protocols, it enables loose coupling between components while maintaining type safety and clear expectations for implementers.
+The Code Craft AI Interfaces package provides a solid foundation for building modular, testable automation systems. By defining clear contracts through protocols, it enables loose coupling between components while maintaining type safety and clear expectations for implementers.

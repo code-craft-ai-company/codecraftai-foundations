@@ -1,8 +1,8 @@
-# AutoMojo Interfaces Package - Tasks Document
+# Code Craft AI Interfaces Package - Tasks Document
 
 ## Overview
 
-This document outlines the implementation tasks required to complete the AutoMojo Interfaces package based on the current codebase analysis, design specifications, and requirements. The tasks are organized by priority and functional area.
+This document outlines the implementation tasks required to complete the Code Craft AI Interfaces package based on the current codebase analysis, design specifications, and requirements. The tasks are organized by priority and functional area.
 
 ## Current Status Analysis
 
@@ -240,7 +240,7 @@ This document outlines the implementation tasks required to complete the AutoMoj
 **Estimated Effort**: 3 hours  
 **Dependencies**: None
 
-**Description**: Ensure all code meets AutoMojo coding standards for debuggability and readability.
+**Description**: Ensure all code meets Code Craft AI coding standards for debuggability and readability.
 
 **Acceptance Criteria**:
 - Code follows naming conventions from userguide/10-02-naming-conventions.rst
@@ -406,7 +406,7 @@ This document outlines the implementation tasks required to complete the AutoMoj
 
 ## Success Criteria
 
-The AutoMojo Interfaces package implementation is considered complete when:
+The Code Craft AI Interfaces package implementation is considered complete when:
 
 1. All interfaces are properly packaged and importable
 2. Comprehensive test suite passes with >90% coverage
