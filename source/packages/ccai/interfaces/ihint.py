@@ -1,5 +1,14 @@
+"""
+    .. module:: ihint
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Protocol for providing diagnostic hints to callers.
+"""
+
 
 from typing import Any, Protocol
+
+__all__ = ["IHint"]
+
 
 class IHint(Protocol):
     """

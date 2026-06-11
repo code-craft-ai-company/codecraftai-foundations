@@ -1,5 +1,14 @@
+"""
+    .. module:: icommandrunner
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Protocol for running commands and the result container they return.
+"""
+
 from typing import Protocol, Callable, Optional, Dict, List
 from dataclasses import dataclass
+
+__all__ = ["RunResult", "ICommandRunner"]
+
 
 @dataclass
 class RunResult:

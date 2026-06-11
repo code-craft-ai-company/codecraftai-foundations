@@ -66,14 +66,15 @@ class TestITestJobProtocol(unittest.TestCase):
 
     def test_query_signature(self) -> None:
         """
-            ``query`` accepts ``query`` and ``format`` and returns ``List[Any]``.
+            ``query`` accepts ``query`` and ``result_format`` and returns
+            ``List[Any]``.
         """
         sig = inspect.signature(ITestJob.query)
         params = sig.parameters
-        self.assertEqual(list(params.keys()), ["self", "query", "format"])
+        self.assertEqual(list(params.keys()), ["self", "query", "result_format"])
         self.assertEqual(params["query"].annotation, str)
-        self.assertEqual(params["format"].annotation, int)
-        self.assertEqual(params["format"].default, 0)
+        self.assertEqual(params["result_format"].annotation, int)
+        self.assertEqual(params["result_format"].default, 0)
         self.assertEqual(sig.return_annotation, List[Any])
         return
 

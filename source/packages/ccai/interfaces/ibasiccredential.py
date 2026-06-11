@@ -14,6 +14,9 @@ __credits__ = []
 
 from typing import Protocol
 
+__all__ = ["IBasicCredential"]
+
+
 class IBasicCredential(Protocol):
     """
         The :class:`IBasicCredential` interface defines the

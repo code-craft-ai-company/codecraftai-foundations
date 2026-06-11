@@ -1,4 +1,13 @@
+"""
+    .. module:: ifileoperator
+        :platform: Darwin, Linux, Unix, Windows
+        :synopsis: Protocol for abstracting file-system operations.
+"""
+
 from typing import Protocol, List
+
+__all__ = ["IFileOperator"]
+
 
 class IFileOperator(Protocol):
     """Protocol for abstracting file system operations."""

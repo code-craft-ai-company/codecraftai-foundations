@@ -14,6 +14,9 @@ __credits__ = []
 
 from typing import Any, List, Protocol
 
+__all__ = ["IExcludeFilter"]
+
+
 class IExcludeFilter(Protocol):
     """
         The IExcludeFilter interface is used to provide a common interface for performing an

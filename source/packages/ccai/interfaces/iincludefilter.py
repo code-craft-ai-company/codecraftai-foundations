@@ -14,6 +14,9 @@ __credits__ = []
 
 from typing import Any, List, Protocol
 
+__all__ = ["IIncludeFilter"]
+
+
 class IIncludeFilter(Protocol):
     """
         The IIncludeFilter interface is used to provide a common interface for performing an

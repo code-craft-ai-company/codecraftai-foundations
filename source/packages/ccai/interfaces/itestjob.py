@@ -14,6 +14,9 @@ __credits__ = []
 
 from typing import Any, Protocol, List
 
+__all__ = ["ITestJob"]
+
+
 class ITestJob(Protocol):
     """
         The :class:`ITestJob` interface defines a common protocol for
@@ -50,13 +53,13 @@ class ITestJob(Protocol):
             :returns: ``None``
         """
 
-    def query(self, query: str, format: int=0) -> List[Any]:
+    def query(self, query: str, result_format: int=0) -> List[Any]:
         """
             Queries the test job for information about the tests it will run and the resource
             requirements of those tests.
 
             :param query: The query string to execute against the job.
-            :param format: Optional format identifier for the query results.
+            :param result_format: Optional format identifier for the query results.
 
             :returns: A list of query results.
         """

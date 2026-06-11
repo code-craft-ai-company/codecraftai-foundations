@@ -14,6 +14,9 @@ __credits__ = []
 
 from typing import Any, Dict, Protocol
 
+__all__ = ["ISerializable"]
+
+
 class ISerializable(Protocol):
     """
         The :class:`ISerializable` interface defines methods for
