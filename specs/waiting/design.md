@@ -1,4 +1,4 @@
-# AutoMojo Waiting Package Design Document
+# Code Craft AI Waiting Package Design Document
 
 ## Overview
 

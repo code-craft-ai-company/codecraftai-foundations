@@ -1,4 +1,4 @@
-# AutoMojo Waiting Package Requirements
+# Code Craft AI Waiting Package Requirements
 
 ## 1. Functional Requirements
 

@@ -1,4 +1,4 @@
-# AutoMojo Waiting Package Implementation Tasks
+# Code Craft AI Waiting Package Implementation Tasks
 
 ## Task Categories
 
