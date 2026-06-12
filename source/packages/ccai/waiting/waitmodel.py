@@ -90,7 +90,11 @@ class TimeoutContext:
         """
             Property indicating if the wait context reached its timeout while running.
         """
-        htoval = self._wait_state != TimeoutState.Completed and self._now_time > self._end_time
+        htoval = False
+        # Timing values are None until mark_begin()/mark_time() run; a read-only
+        # accessor must not raise when queried before tracking has started.
+        if self._now_time is not None and self._end_time is not None:
+            htoval = self._wait_state != TimeoutState.Completed and self._now_time > self._end_time
         return htoval
 
     @property
@@ -101,7 +105,7 @@ class TimeoutContext:
         return self._interval
 
     @property
-    def is_do_every_interval(self):
+    def is_do_every_interval(self) -> bool:
         """
             Indicates if the current iteration satisfies the do-every interval.
 
@@ -133,7 +137,7 @@ class TimeoutContext:
         """
         return self._what_for
 
-    def continue_waiting(self):
+    def continue_waiting(self) -> None:
         """
             Reset the wait context to a waiting state so we can continue waiting.
         """
@@ -157,7 +161,7 @@ class TimeoutContext:
 
         return err_inst
 
-    def extend_timeout(self, seconds: float):
+    def extend_timeout(self, seconds: float) -> None:
         """
             Extend the timeout of the current wait context by the specified number of seconds.
 
@@ -186,7 +190,7 @@ class TimeoutContext:
         err_msg = os.linesep.join(err_msg_lines)
         return err_msg
 
-    def mark_begin(self):
+    def mark_begin(self) -> None:
         """
             Mark the wait context as running.
         """
@@ -196,35 +200,35 @@ class TimeoutContext:
         self._wait_state = TimeoutState.Running
         return
 
-    def mark_complete(self):
+    def mark_complete(self) -> None:
         """
             Mark the wait context as complete.
         """
         self._wait_state = TimeoutState.Completed
         return
 
-    def mark_final_attempt(self):
+    def mark_final_attempt(self) -> None:
         """
             Mark the wait context as being in the final attempt condition.
         """
         self._final_attempt = True
         return
 
-    def mark_time(self):
+    def mark_time(self) -> None:
         """
             Called to mark the current time in the :class:`WaitContext` instance.
         """
         self._now_time = datetime.now()
         return
 
-    def mark_timeout(self):
+    def mark_timeout(self) -> None:
         """
             Called to mark the wait context as timed out.
         """
         self._wait_state = TimeoutState.TimedOut
         return
 
-    def reduce_delay(self, secs):
+    def reduce_delay(self, secs: float) -> None:
         """
             Reduce the wait start delay.
         """
@@ -321,7 +325,7 @@ class WaitGate:
         """
         return self._timeout_args
 
-    def clear(self):
+    def clear(self) -> None:
         """
             Clears the underlying gate.
         """
@@ -337,14 +341,39 @@ class WaitGate:
         rtnval = self._gate.is_set()
         return rtnval
 
-    def set(self):
+    def set(self) -> None:
         """
             Sets the underlying gate.
         """
         self._gate.set()
         return
 
-    def wait(self, timeout: Optional[float]=None, raise_timeout=False):
+    def _format_timeout_message(self, timeout: Optional[float]) -> str:
+        """
+            Builds the timeout error message from the gate's configured message
+            and timeout arguments.
+
+            :param timeout: The timeout value that elapsed.
+
+            :returns: The assembled timeout error message.
+        """
+        errmsg_lines = []
+        if self._message is not None and len(self._message) > 0:
+            errmsg_lines.append(self._message)
+        else:
+            errmsg_lines.append("Timed out waiting for the gate to be set.")
+
+        errmsg_lines.append(f"TIMEOUT: {timeout}")
+
+        if self._timeout_args is not None and len(self._timeout_args) > 0:
+            errmsg_lines.append("TIMEOUT ARGS:")
+            for targ in self._timeout_args:
+                errmsg_lines.append(f"    {targ}")
+
+        errmsg = os.linesep.join(errmsg_lines)
+        return errmsg
+
+    def wait(self, timeout: Optional[float]=None, raise_timeout: bool=False) -> bool:
         """
             Waits for the gate to be set.
 
@@ -352,14 +381,15 @@ class WaitGate:
             :param raise_timeout: If ``True``, raise :class:`TimeoutError` when the gate is not set.
 
             :returns: ``True`` if the gate was set before the timeout.
+            :raises: TimeoutError when ``raise_timeout`` is ``True`` and the gate is not set.
         """
         if timeout is None:
             timeout = self._timeout
 
         rtnval = self._gate.wait(timeout=timeout)
         if not rtnval:
-            errmsg = ""
             if raise_timeout:
+                errmsg = self._format_timeout_message(timeout=timeout)
                 raise TimeoutError(errmsg)
 
         return rtnval
@@ -367,7 +397,10 @@ class WaitGate:
 
 class WaitingScope:
     """
-        Context manager that clears gates on entry and waits for them on exit.
+        Context manager that clears all managed gates on entry so they can be
+        coordinated as a group.  Call :meth:`wait` to block until every managed
+        gate is set.  Exiting the scope does not implicitly wait — waiting is an
+        explicit, caller-controlled action via :meth:`wait`.
     """
 
     def __init__(self, gates: List[WaitGate],):
@@ -379,21 +412,25 @@ class WaitingScope:
         self._gates = gates
         return
 
-    def __enter__(self):
+    def __enter__(self) -> "WaitingScope":
         """
             Clears all managed gates upon entering the scope.
+
+            :returns: This :class:`WaitingScope` instance so it can be bound with
+                ``with WaitingScope(gates) as scope``.
         """
         for gate in self._gates:
             gate.clear()
+        return self
+
+    def __exit__(self, ex_type: Optional[Type], ex_inst: Optional[BaseException], ex_tb: Optional[TracebackType]) -> None:
+        """
+            Called when exiting the waiting scope.  Waiting is explicit (call
+            :meth:`wait`); exit performs no implicit blocking.
+        """
         return
 
-    def __exit__(self, ex_type: Type, ex_inst: BaseException, ex_tb: TracebackType):
-        """
-            Called when exiting the waiting scope.
-        """
-        return
-
-    def wait(self):
+    def wait(self) -> None:
         """
             Waits for all managed gates to be set.
         """
