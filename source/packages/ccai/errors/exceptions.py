@@ -11,6 +11,8 @@ __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
+from typing import Optional
+
 from http.client import HTTPException
 
 
@@ -114,7 +116,25 @@ class SkipError(RuntimeError):
     """
         This error is raised when a descendant flow control context, such as a testcase, wishes to exit indicating
         that its execution is being skipped.
+
+        The consumers of this error report the `reason` and `bug` attributes, so they are
+        established here rather than left for each raising site to attach. Raising
+        `SkipError("a reason")` and having the handler fail on a missing attribute
+        would make the plain form of the error unusable.
     """
+
+    def __init__(self, reason: str = "", bug: Optional[str] = None, *args):
+        """
+            :param reason: Why the execution is being skipped.
+            :param bug: Optional identifier of the bug the skip is waiting on. A skip
+                with a bug reference is temporary; one without is a condition of the
+                environment, such as a credential that is not configured.
+            :param args: Any further arguments, passed through to RuntimeError.
+        """
+        super().__init__(reason, *args)
+        self.reason = reason
+        self.bug = bug
+        return
 
 class TaskingCancelled(CancelledError):
     """
