@@ -65,6 +65,7 @@ Each feature name is also its folder under `specs/` and under `source/tests/ccai
 ## Aspects (`ccai.aspects`, `specs/aspects`)
 - The minimal, dependency-free `Aspects` dataclass that contract-layer protocols accept
 - The base that every domain aspects class in the suite derives from, so that any aspects object is-a `ccai.aspects.Aspects`
+- Instances compare by identity and are hashable; the class is `Freezable` but never freezes itself. A leaf aspects class calls `freeze()` at the end of its `__init__`, and module-level defaults are always frozen: `DEFAULT_ASPECTS = Aspects().freeze()`
 
 ## Bases (`ccai.bases`, `specs/bases`)
 - `Freezable`, a base class whose instances refuse attribute assignment after `freeze()`, used for shared behaviour-parameter constants

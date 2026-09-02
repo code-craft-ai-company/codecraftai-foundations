@@ -25,11 +25,22 @@ __credits__ = []
 from dataclasses import dataclass
 from typing import Optional
 
+from ccai.bases.freezable import Freezable
 
-@dataclass
-class Aspects:
+
+@dataclass(eq=False)
+class Aspects(Freezable):
     """
         Minimal carrier for behaviour-modifying parameters.
+
+        Every aspects class in the suite derives from this one. Instances compare by
+        identity and are hashable (``eq=False``), because aspects objects are behaviour
+        carriers checked against shared defaults rather than values.
+
+        The class inherits :class:`Freezable` but does not freeze itself: freezing must
+        happen after the most-derived class has set its last field. A leaf aspects class
+        calls ``freeze()`` at the end of its ``__init__`` and module-level defaults are
+        always frozen, for example ``DEFAULT_ASPECTS = Aspects().freeze()``.
 
         :param completion_interval: Seconds between completion-poll iterations
             for callers that drive a synchronous wait loop.

@@ -25,6 +25,8 @@ built, so that a module-level default cannot be modified by one caller and obser
 2. WHEN `freeze()` has been called, THE Freezable base SHALL raise `AttributeError` on any
    attribute assignment, and the message SHALL name the attribute.
 3. THE Freezable base SHALL retain every attribute value set before freezing.
-4. THE Freezable base SHALL be importable as `ccai.bases.freezable.Freezable`, and
+4. THE `freeze()` method SHALL return the instance so a frozen constant can be built in one
+   expression.
+5. THE Freezable base SHALL be importable as `ccai.bases.freezable.Freezable`, and
    `ccai.xmodules.freezable.Freezable` SHALL remain importable as a re-export until the suite
    has migrated.

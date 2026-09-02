@@ -11,8 +11,12 @@ subclass it with keyword-only constructors that forward the base fields and add 
    shipped, so no consumer changes.
 2. **Root of one hierarchy** — the richer interop `Aspects` becomes a subclass (consolidation
    phase 4), ending the situation where two unrelated classes shared the name.
-3. **Stays a dataclass** — immutability for shared defaults is provided by subclasses that also
-   derive from `ccai.bases.Freezable`, as the interop tier does.
+3. **`eq=False` and `Freezable`** — a default dataclass compares by field and sets `__hash__`
+   to `None`, which would make every subclass unhashable and change interop semantics. Aspects
+   objects are behaviour carriers checked against shared defaults, so identity equality is the
+   right semantics. The base inherits `Freezable` so every subclass shares one freeze mechanism,
+   but it never freezes itself: freezing must follow the most-derived class's last assignment.
+   Leaf classes call `freeze()` at the end of `__init__`; defaults are `Aspects().freeze()`.
 
 ## Components and Interfaces
 

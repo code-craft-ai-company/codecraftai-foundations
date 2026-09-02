@@ -38,6 +38,11 @@ class TestFreezable(unittest.TestCase):
         self.assertIn("name=timeout", str(caught.exception))
         return
 
+    def test_freeze_returns_self(self) -> None:
+        settings = Settings(retries=3)
+        self.assertIs(settings.freeze(), settings)
+        return
+
     def test_frozen_value_is_retained(self) -> None:
         settings = Settings(retries=3)
         settings.freeze()

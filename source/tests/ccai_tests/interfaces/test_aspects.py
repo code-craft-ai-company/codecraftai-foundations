@@ -11,6 +11,7 @@ import unittest
 from typing import Optional
 
 from ccai.aspects.aspects import Aspects
+from ccai.bases.freezable import Freezable
 
 
 class TestAspectsDefaults(unittest.TestCase):
@@ -81,6 +82,56 @@ class TestAspectsOverrides(unittest.TestCase):
         """
         import ccai.aspects.aspects as aspects_module
         self.assertEqual(aspects_module.__all__, ["Aspects"])
+        return
+
+
+class TestAspectsSemantics(unittest.TestCase):
+    """
+        Verify the identity, hashing and freezing semantics every subclass inherits.
+    """
+
+    def test_is_freezable(self) -> None:
+        self.assertTrue(issubclass(Aspects, Freezable))
+        return
+
+    def test_compares_by_identity(self) -> None:
+        first = Aspects()
+        second = Aspects()
+        self.assertNotEqual(first, second)
+        self.assertEqual(first, first)
+        return
+
+    def test_is_hashable(self) -> None:
+        aspects = Aspects()
+        self.assertEqual(len({aspects, aspects}), 1)
+        return
+
+    def test_not_frozen_by_default(self) -> None:
+        aspects = Aspects()
+        aspects.max_attempts = 4
+        self.assertEqual(aspects.max_attempts, 4)
+        return
+
+    def test_freeze_blocks_assignment_and_returns_self(self) -> None:
+        aspects = Aspects()
+        self.assertIs(aspects.freeze(), aspects)
+        with self.assertRaises(AttributeError):
+            aspects.max_attempts = 4
+        return
+
+    def test_subclass_adds_fields_then_freezes(self) -> None:
+
+        class AspectsDomain(Aspects):
+            def __init__(self, *, request_timeout: float = 30.0, **base: object) -> None:
+                super().__init__(**base)
+                self.request_timeout = request_timeout
+                self.freeze()
+
+        aspects = AspectsDomain(request_timeout=5.0, max_attempts=2)
+        self.assertEqual(aspects.request_timeout, 5.0)
+        self.assertEqual(aspects.max_attempts, 2)
+        with self.assertRaises(AttributeError):
+            aspects.request_timeout = 1.0
         return
 
 

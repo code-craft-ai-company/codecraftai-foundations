@@ -25,7 +25,10 @@ implementation package, so that contracts stay dependency-free.
 
 1. THE Aspects class SHALL be a dataclass with `completion_interval`, `completion_timeout`,
    `connection_timeout`, `max_attempts` and `logger_name` fields with the documented defaults.
-2. THE Aspects module SHALL import only from the standard library.
+2. THE Aspects module SHALL import only from the standard library and `ccai.bases`.
+3. THE Aspects class SHALL compare by identity and be hashable.
+4. THE Aspects class SHALL derive from `Freezable` and SHALL NOT call `freeze()` in its own
+   initialisation, so subclasses can add fields before freezing.
 
 ### Requirement 2: Single Hierarchy
 

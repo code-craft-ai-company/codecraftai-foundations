@@ -17,8 +17,12 @@ class Freezable:
         return
     
     def freeze(self):
+        """
+            Blocks further attribute assignment. Returns ``self`` so a frozen constant can be
+            built in one expression, for example ``DEFAULT = Settings(retries=3).freeze()``.
+        """
         object.__setattr__(self, "__frozen__", True)
-        return
+        return self
     
     def __setattr__(self, name, value):
         # If the '__frozen__' flag exists and is True, block all changes
