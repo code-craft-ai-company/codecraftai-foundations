@@ -33,7 +33,9 @@ constructor validation, no behaviour, and no credential material.
    `https://`, or `file://` URL with no whitespace.
 6. Each `trusted_hosts` entry SHALL match `host[:port]`.
 7. `constraints_files` SHALL require at least one `requirements_files` entry.
-8. Every violation SHALL raise `SchemaValidationError`.
+8. `index_credential`, when given, SHALL be a non-empty string and SHALL require
+   `index_url`; `index_url` and `extra_index_urls` SHALL NOT embed URL userinfo.
+9. Every violation SHALL raise `SchemaValidationError`.
 
 ### Requirement 3: Derived Properties
 

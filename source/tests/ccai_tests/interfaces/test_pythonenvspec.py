@@ -150,6 +150,39 @@ class PythonEnvironmentSpecValidationTests(unittest.TestCase):
         return
 
 
+class PythonEnvironmentSpecIndexCredentialTests(unittest.TestCase):
+
+    def test_default_is_none(self) -> None:
+        self.assertIsNone(PythonEnvironmentSpec(path="/opt/v").index_credential)
+        return
+
+    def test_accepts_vault_reference_with_index_url(self) -> None:
+        spec = PythonEnvironmentSpec(path="/opt/v", index_url="https://pypi.internal/simple",
+                                     index_credential="pypi:internal")
+        self.assertEqual(spec.index_credential, "pypi:internal")
+        return
+
+    def test_requires_index_url(self) -> None:
+        with self.assertRaises(SchemaValidationError):
+            PythonEnvironmentSpec(path="/opt/v", index_credential="pypi:internal")
+        return
+
+    def test_rejects_empty_reference(self) -> None:
+        with self.assertRaises(SchemaValidationError):
+            PythonEnvironmentSpec(path="/opt/v", index_url="https://h/simple", index_credential="")
+        return
+
+    def test_rejects_credentials_embedded_in_index_url(self) -> None:
+        with self.assertRaises(SchemaValidationError):
+            PythonEnvironmentSpec(path="/opt/v", index_url="https://user:tok@pypi.internal/simple")
+        return
+
+    def test_rejects_credentials_embedded_in_extra_index_urls(self) -> None:
+        with self.assertRaises(SchemaValidationError):
+            PythonEnvironmentSpec(path="/opt/v", extra_index_urls=["https://u:p@h/simple"])
+        return
+
+
 class PythonEnvironmentSpecSerialisationTests(unittest.TestCase):
 
     def test_to_dict_from_dict_roundtrip(self) -> None:
@@ -159,6 +192,7 @@ class PythonEnvironmentSpecSerialisationTests(unittest.TestCase):
             interpreter="/usr/bin/python3.12", system_site_packages=True,
             upgrade_pip=False, upgrade_packages=True, recreate=True,
             owner="app:app", index_url="https://pypi.internal/simple",
+            index_credential="pypi:internal",
             extra_index_urls=["https://extra.internal/simple"],
             trusted_hosts=["pypi.internal"], pip_options=["--no-cache-dir"],
         )

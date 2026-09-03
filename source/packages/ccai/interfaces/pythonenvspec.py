@@ -27,6 +27,7 @@ _OWNER_PATTERN = re.compile(
     r"^[A-Za-z_][A-Za-z0-9_-]{0,31}\$?(:[A-Za-z_][A-Za-z0-9_-]{0,31}\$?)?$"
 )
 _URL_PATTERN = re.compile(r"^(https?|file)://\S+$")
+_URL_USERINFO_PATTERN = re.compile(r"^[A-Za-z]+://[^/@]+@")
 _HOST_PATTERN = re.compile(r"^[A-Za-z0-9.-]+(:[0-9]{1,5})?$")
 
 _DEFAULT_INTERPRETER = "python3"
@@ -93,9 +94,11 @@ class PythonEnvironmentSpec(SchemaObject):
         without a mapping table.
 
         No credential material is stored here.  ``index_url`` and
-        ``extra_index_urls`` are expected to be credential-free; a
-        credentialed index is a follow-up that names a credential-vault
-        entry the way ``VPNJoinSpec.control_plane_credential`` does.
+        ``extra_index_urls`` must be credential-free; a private index is
+        declared by naming a credential-vault entry in
+        ``index_credential`` (the way ``VPNJoinSpec.control_plane_credential``
+        does), which the provisioning lifecycle resolves at validate time
+        and injects at render time.
     """
 
     path = Field(str, required=True)
@@ -110,6 +113,7 @@ class PythonEnvironmentSpec(SchemaObject):
     recreate = Field(bool, required=False, default=False)
     owner = Field(str, required=False, default=None)
     index_url = Field(str, required=False, default=None)
+    index_credential = Field(str, required=False, default=None)
     extra_index_urls = Field(list, required=False, default=None)
     trusted_hosts = Field(list, required=False, default=None)
     pip_options = Field(list, required=False, default=None)
@@ -126,6 +130,7 @@ class PythonEnvironmentSpec(SchemaObject):
                  recreate: bool = False,
                  owner: Optional[str] = None,
                  index_url: Optional[str] = None,
+                 index_credential: Optional[str] = None,
                  extra_index_urls: Optional[List[str]] = None,
                  trusted_hosts: Optional[List[str]] = None,
                  pip_options: Optional[List[str]] = None) -> None:
@@ -153,6 +158,12 @@ class PythonEnvironmentSpec(SchemaObject):
                           tree is handed to (first-boot bootstrap runs as
                           root).
             :param index_url: Optional credential-free ``--index-url``.
+            :param index_credential: Optional credential-vault reference
+                                     (a ``BasicCredential`` or a token
+                                     credential) applied to ``index_url``
+                                     and to any ``extra_index_urls`` on
+                                     the same host.  Requires
+                                     ``index_url``.
             :param extra_index_urls: Optional credential-free
                                      ``--extra-index-url`` entries.
             :param trusted_hosts: Optional ``--trusted-host`` entries.
@@ -206,6 +217,19 @@ class PythonEnvironmentSpec(SchemaObject):
                     "index_url must be an http(s):// or file:// URL without "
                     "whitespace, got {!r}.".format(index_url)
                 )
+            if _URL_USERINFO_PATTERN.match(index_url) is not None:
+                raise SchemaValidationError(
+                    "index_url must not embed credentials; name a vault entry "
+                    "in index_credential instead."
+                )
+
+        if index_credential is not None:
+            _require_non_empty_string(value=index_credential,
+                                      field_name="index_credential")
+            if index_url is None:
+                raise SchemaValidationError(
+                    "index_credential requires index_url."
+                )
 
         effective_extra_urls = _require_string_list(
             values=extra_index_urls, field_name="extra_index_urls"
@@ -215,6 +239,11 @@ class PythonEnvironmentSpec(SchemaObject):
                 raise SchemaValidationError(
                     "extra_index_urls entries must be http(s):// or file:// "
                     "URLs without whitespace, got {!r}.".format(extra_url)
+                )
+            if _URL_USERINFO_PATTERN.match(extra_url) is not None:
+                raise SchemaValidationError(
+                    "extra_index_urls entries must not embed credentials; name "
+                    "a vault entry in index_credential instead."
                 )
 
         effective_trusted_hosts = _require_string_list(
@@ -237,6 +266,7 @@ class PythonEnvironmentSpec(SchemaObject):
                          recreate=bool(recreate),
                          owner=owner,
                          index_url=index_url,
+                         index_credential=index_credential,
                          extra_index_urls=effective_extra_urls,
                          trusted_hosts=effective_trusted_hosts,
                          pip_options=effective_pip_options)

@@ -25,6 +25,7 @@ same shape without depending on each other.
 | `recreate` | `bool` | `False` | Remove an existing environment first |
 | `owner` | `str \| None` | `None` | `user[:group]` handed the finished tree |
 | `index_url` | `str \| None` | `None` | Credential-free `--index-url` |
+| `index_credential` | `str \| None` | `None` | Credential-vault reference applied to `index_url` and same-host extras; requires `index_url` |
 | `extra_index_urls` | `list[str]` | `[]` | Credential-free `--extra-index-url` |
 | `trusted_hosts` | `list[str]` | `[]` | `--trusted-host` entries |
 | `pip_options` | `list[str]` | `[]` | Extra install tokens |
@@ -40,10 +41,13 @@ config to read them from.
 ## Why No Credentials
 
 Every string lands in a shell script that cloud-init logs world-readably on
-some venues. The spec therefore accepts no token field, and the renderer that
-consumes it isolates even credential-free index URLs in a `0400` file. A
-credentialed index will follow the `VPNJoinSpec.control_plane_credential`
-pattern: name a vault entry, mint at render time.
+some venues. The spec therefore accepts no token field and rejects URL
+userinfo in `index_url` / `extra_index_urls`. A private index is declared by
+naming a vault entry in `index_credential`, following
+`VPNJoinSpec.control_plane_credential`: the provisioning engine resolves the
+name at validate time (`BasicCredential`, `PersonalApiTokenCredential`, or a
+token credential) and the renderer embeds it inside the root-only `0400`
+pip configuration at render time.
 
 ## Module Layout
 
