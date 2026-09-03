@@ -429,6 +429,8 @@ def create_traceback_detail(ex_inst: BaseException) -> TracebackDetail:
                 else:
                     try:
                         arep = repr(aval)
+                    # SemanticError signals API misuse and must never be
+                    # swallowed by the broad handler below -- re-raise it.
                     except SemanticError:
                         raise
                     except Exception:

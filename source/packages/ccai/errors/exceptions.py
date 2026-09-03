@@ -64,6 +64,28 @@ class ConfigurationError(BaseException):
     """
         The base error object for errors that indicate that there is an issue related
         to improper configuration.
+
+        MEANING: the code was given incorrect information that it cannot rely on in
+        order to run.  The process was kicked off with wrong or corrupt input, so
+        continuing would produce results derived from information already known to be
+        untrustworthy.
+
+        DO NOT CHANGE THIS BASE CLASS.  It derives from :class:`BaseException` on
+        purpose so that it passes through every ``except Exception`` handler and ends
+        the run no matter how much intervening code is catching broadly.  Deriving it
+        from :class:`Exception` would let ordinary handlers swallow it.
+
+        DO NOT CATCH IT.  Do not catch, suppress, or re-raise it as an
+        :class:`Exception` subclass.  Downgrading it into a catchable error hands a
+        later ``except Exception`` the chance to continue, and the *subsequent* error
+        that then occurs usually carries no information about this original cause --
+        the real problem ends up hidden behind noise.  Detect configuration problems
+        as early as possible and let them stop the run.
+
+        The one sanctioned pattern is aggregation *that still terminates*: a schema
+        or spec validator may collect several configuration problems and raise a
+        single ``ConfigurationError`` enumerating all of them, so the operator can
+        fix them in one pass.  The run must still end with a ``ConfigurationError``.
     """
 
 class HaltError(RuntimeError):
@@ -110,6 +132,36 @@ class SemanticError(BaseException):
         The base error object for errors that indicate that there is an issue with
         a piece of automation code and with the way the Automation Kit code is being
         utilized.
+
+        MEANING: an API or a piece of code has detected that it is being used
+        incorrectly.  Treat this with the same severity as a compile-time error --
+        halt and report the condition so it can be fixed.  Do not proceed under
+        false pretences.
+
+        DO NOT CHANGE THIS BASE CLASS.  It derives from :class:`BaseException` on
+        purpose so that it passes through every ``except Exception`` handler and ends
+        the run no matter how much intervening code is catching broadly.  Deriving it
+        from :class:`Exception` would let ordinary handlers swallow it.
+
+        DO NOT CATCH IT.  Do not catch, suppress, or re-raise it as an
+        :class:`Exception` subclass.  Misuse of an API is a definitive code defect;
+        allowing it to be handled lets the defective call site keep running, and the
+        *subsequent* error that then occurs usually carries no information about this
+        original cause.
+
+        The only sanctioned use of ``except SemanticError`` is the guard idiom --
+        catching it purely to ``raise`` it again so that a broader ``except
+        Exception`` further down the same handler chain cannot swallow it:
+
+        .. code-block:: python
+
+            try:
+                value = some_api_call()
+            except SemanticError:
+                # Never swallow API misuse -- let it bubble past the broad handler.
+                raise
+            except Exception as xcpt:
+                value = fallback()
     """
 
 class SkipError(RuntimeError):
