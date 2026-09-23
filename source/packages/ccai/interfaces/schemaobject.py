@@ -6,7 +6,7 @@
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
-from typing import Any, Dict, List, Optional, Type, TypeVar
+from typing import Any, Dict, Type, TypeVar
 
 from ccai.interfaces.schemafield import Field
 

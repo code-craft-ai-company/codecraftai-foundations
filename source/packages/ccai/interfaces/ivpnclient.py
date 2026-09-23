@@ -86,7 +86,6 @@ class IVPNClient(Protocol):
             :raises: Implementation-specific exceptions if the daemon
                 rejects the auth key or fails to start.
         """
-        ...
 
     def bring_down(self, *, aspects: Aspects) -> None:
         """
@@ -99,7 +98,6 @@ class IVPNClient(Protocol):
 
             :returns: ``None``.
         """
-        ...
 
     def status(self, *, aspects: Aspects) -> VPNStatus:
         """
@@ -112,7 +110,6 @@ class IVPNClient(Protocol):
             :raises: Implementation-specific exception when the daemon is
                 not installed.
         """
-        ...
 
     def self_address(self) -> Optional[str]:
         """
@@ -125,7 +122,6 @@ class IVPNClient(Protocol):
 
             :returns: An overlay address string, or ``None``.
         """
-        ...
 
     def peer_addresses(self) -> Dict[str, str]:
         """
@@ -135,7 +131,6 @@ class IVPNClient(Protocol):
                 overlay IP. Implementations MAY return an empty dict when
                 the provider exposes no peer enumeration.
         """
-        ...
 
 
 __all__ = ["IVPNClient", "VPNStatus"]

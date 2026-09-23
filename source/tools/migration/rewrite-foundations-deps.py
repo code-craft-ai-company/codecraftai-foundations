@@ -53,7 +53,6 @@ def is_dependency_section(name: str) -> bool:
 def rewrite(content: str, bump: bool) -> str:
     out = []
     section = None
-    foundations_written = False
     section_has_foundations = False
 
     for line in content.splitlines(keepends=True):
@@ -86,7 +85,6 @@ def rewrite(content: str, bump: bool) -> str:
                     if not section_has_foundations:
                         out.append(FOUNDATIONS_LINE + "\n")
                         section_has_foundations = True
-                        foundations_written = True
                     continue
 
         out.append(line)

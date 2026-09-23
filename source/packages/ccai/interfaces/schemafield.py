@@ -6,7 +6,7 @@
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
-from typing import Any, Optional, TypeVar, get_type_hints
+from typing import Any, Optional, TypeVar
 
 
 T = TypeVar('T')

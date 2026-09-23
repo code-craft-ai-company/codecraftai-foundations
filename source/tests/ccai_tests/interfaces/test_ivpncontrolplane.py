@@ -6,7 +6,7 @@ import dataclasses
 import inspect
 import typing
 import unittest
-from typing import List, Optional
+from typing import List
 
 from ccai.aspects.aspects import Aspects
 from ccai.interfaces.ivpncontrolplane import IVPNControlPlane, VPNDeviceRecord

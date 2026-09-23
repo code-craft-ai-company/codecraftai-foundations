@@ -32,7 +32,6 @@ class ISerializable(Protocol):
 
             :returns: A new instance of the class.
         """
-        ...
 
     def as_dict(self) -> Dict[str, Any]:
         """
@@ -40,4 +39,3 @@ class ISerializable(Protocol):
 
             :returns: The object serialized to a dictionary.
         """
-        ...

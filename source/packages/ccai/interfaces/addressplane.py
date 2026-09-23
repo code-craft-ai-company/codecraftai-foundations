@@ -64,7 +64,6 @@ class IDeviceAddressSet(Protocol):
             :returns: The address string when populated, otherwise
                 ``None``.
         """
-        ...
 
     def has(self, *, plane: AddressPlane) -> bool:
         """
@@ -75,7 +74,6 @@ class IDeviceAddressSet(Protocol):
             :returns: ``True`` when :meth:`address_for` would return a
                 non-``None`` value for ``plane``, otherwise ``False``.
         """
-        ...
 
     def planes(self) -> List[AddressPlane]:
         """
@@ -84,7 +82,6 @@ class IDeviceAddressSet(Protocol):
             :returns: A list of populated :class:`AddressPlane` values in
                 ascending ``IntEnum`` order.
         """
-        ...
 
     def public(self) -> Optional[str]:
         """
@@ -92,7 +89,6 @@ class IDeviceAddressSet(Protocol):
 
             :returns: The public address, or ``None`` when not populated.
         """
-        ...
 
     def private(self) -> Optional[str]:
         """
@@ -100,7 +96,6 @@ class IDeviceAddressSet(Protocol):
 
             :returns: The private address, or ``None`` when not populated.
         """
-        ...
 
     def overlay(self) -> Optional[str]:
         """
@@ -108,7 +103,6 @@ class IDeviceAddressSet(Protocol):
 
             :returns: The overlay address, or ``None`` when not populated.
         """
-        ...
 
 
 @dataclass(frozen=True)

@@ -3,7 +3,6 @@ import unittest
 
 import concurrent.futures
 import time
-import traceback
 
 from ccai.waiting.constants import DEFAULT_WAIT_TIMEOUT, DEFAULT_WAIT_INTERVAL
 from ccai.waiting.waitfunction import wait_for_it
@@ -97,7 +96,6 @@ class TestWaitForIt(unittest.TestCase):
         try:
             future.result()
         except TimeoutError as toerr:
-            errmsg = traceback.format_exc()
             timeout_raised = True
         
         self.assertTrue(timeout_raised, "A 'TimeoutError' should have been raised.")

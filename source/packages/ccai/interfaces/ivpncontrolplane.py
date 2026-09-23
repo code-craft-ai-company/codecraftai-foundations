@@ -83,7 +83,6 @@ class IVPNControlPlane(Protocol):
             :raises: ``NotImplementedError`` when the provider has no
                 native key-mint flow (Twingate).
         """
-        ...
 
     def list_devices(self, *, aspects: Aspects) -> List[VPNDeviceRecord]:
         """
@@ -94,7 +93,6 @@ class IVPNControlPlane(Protocol):
             :returns: A list of :class:`VPNDeviceRecord` entries. An empty
                 list is a valid response and is not an error.
         """
-        ...
 
     def delete_device(self, *, device_id: str, aspects: Aspects) -> None:
         """
@@ -111,7 +109,6 @@ class IVPNControlPlane(Protocol):
             :raises: Provider-specific authorization exception when the
                 credential lacks delete authority.
         """
-        ...
 
     def apply_acl(self, *, acl_doc: dict, aspects: Aspects) -> None:
         """
@@ -131,7 +128,6 @@ class IVPNControlPlane(Protocol):
             :raises: ``NotImplementedError`` when the provider has no flat
                 ACL surface.
         """
-        ...
 
 
 __all__ = ["IVPNControlPlane", "VPNDeviceRecord"]

@@ -8,7 +8,6 @@
 
 import dataclasses
 import unittest
-from typing import Optional
 
 from ccai.aspects.aspects import Aspects
 from ccai.bases.freezable import Freezable

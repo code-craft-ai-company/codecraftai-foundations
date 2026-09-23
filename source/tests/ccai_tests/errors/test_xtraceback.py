@@ -10,8 +10,7 @@ import inspect
 import os
 import unittest
 
-from typing import Dict, List
-from unittest import mock
+from unittest.mock import patch
 
 from ccai.errors import xtraceback
 
@@ -528,7 +527,7 @@ class TestCreateTracebackDetail(unittest.TestCase):
             code_lines=["040: pass"]
         )
 
-        with mock.patch.object(
+        with patch.object(
             xtraceback,
             "collect_stack_frames",
             return_value=[frame_detail]
@@ -555,7 +554,7 @@ class TestCreateTracebackDetail(unittest.TestCase):
 
             :returns: ``None``
         """
-        with mock.patch.object(xtraceback, "collect_stack_frames", return_value=[]):
+        with patch.object(xtraceback, "collect_stack_frames", return_value=[]):
             ex_inst = RuntimeError("nothing here")
             tb_detail = xtraceback.create_traceback_detail(ex_inst)
 
@@ -586,7 +585,7 @@ class TestCreateTracebackDetail(unittest.TestCase):
         prev_override = xtraceback.TRACEBACK_CONFIG.TRACEBACK_POLICY_OVERRIDE
         xtraceback.TRACEBACK_CONFIG.TRACEBACK_POLICY_OVERRIDE = xtraceback.TracebackFormatPolicy.Hide
         try:
-            with mock.patch.object(
+            with patch.object(
                 xtraceback,
                 "collect_stack_frames",
                 return_value=[frame_detail]
@@ -635,7 +634,7 @@ class TestFormatException(unittest.TestCase):
 
             :returns: ``None``
         """
-        with mock.patch.object(xtraceback, "collect_stack_frames", return_value=[]):
+        with patch.object(xtraceback, "collect_stack_frames", return_value=[]):
             ex_inst = RuntimeError("boom")
             lines = xtraceback.format_exception(ex_inst)
         is_list = isinstance(lines, list)

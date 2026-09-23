@@ -227,6 +227,7 @@ class TestSemanticError(unittest.TestCase):
             except Exception:
                 caught = True
         except exceptions.SemanticError:
+            # Expected: the SemanticError bypassed the inner 'except Exception' handler, which is what this test verifies.
             pass
         self.assertFalse(caught)
         return

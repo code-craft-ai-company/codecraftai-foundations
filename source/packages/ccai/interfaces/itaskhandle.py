@@ -93,7 +93,6 @@ class ITaskHandle(Protocol):
                 :attr:`Aspects.completion_timeout` elapses without
                 reaching a terminal state.
         """
-        ...
 
     def cancel(self, *, aspects: Aspects) -> None:
         """
@@ -109,7 +108,6 @@ class ITaskHandle(Protocol):
             :raises: ``NotImplementedError`` when the underlying API does
                 not support cancellation.
         """
-        ...
 
     def is_done(self) -> bool:
         """
@@ -119,7 +117,6 @@ class ITaskHandle(Protocol):
                 (``SUCCEEDED``, ``FAILED``, or ``CANCELLED``), otherwise
                 ``False``.
         """
-        ...
 
     def task_id(self) -> str:
         """
@@ -127,7 +124,6 @@ class ITaskHandle(Protocol):
 
             :returns: The task identifier string.
         """
-        ...
 
 
 __all__ = ["ITaskHandle", "TaskResult", "TaskState"]
