@@ -7,12 +7,14 @@ Getting Started
 Installation
 ============
 
-Other ``codecraftai-*`` packages depend on ``codecraftai-foundations`` from the Code Craft AI package
-repository:
+Other ``codecraftai-*`` packages depend on ``codecraftai-foundations``, which installs from PyPI:
 
 .. code-block:: toml
 
-    codecraftai-foundations = { version = "<2.0.0", source = "codecraftai" }
+    [project]
+    dependencies = [
+        "codecraftai-foundations>=1.0.0,<2.0.0",
+    ]
 
 For local development from a checkout:
 
